@@ -1,4 +1,5 @@
 import mysql.connector as mysql
+import contextlib
 
 
 class DatabaseError(Exception):
@@ -10,46 +11,71 @@ class DatabaseError(Exception):
 
 
 class Database:
-    def __init__(self, host, user, database, passwd=""):
-        self.host = host
-        self.user = user
-        self.passwd = passwd
-        self.database = database
-        self.mydb = self.connect()
-        self.cursor = self.mydb.cursor()
+    def __init__(self, settings):
+        self.settings = settings
+        self.settings['autocommit'] = True
+        self._connection = None
 
     def connect(self):
         try:
-            conn = mysql.connect(
-                host=self.host, user=self.user, passwd=self.passwd, database=self.database)
-            if conn.is_connected():
-                return conn
-        except mysql.Error as err:
-            raise DatabaseError(err)
+            self._connection = mysql.connect(**self.settings)
+        except mysql.Error as e:
+            raise DatabaseError(
+                f"Failure in connecting to database. Error: {e}")
 
-    def mysql_query_get(self, query):
+    def get(self, query):
         try:
             rows = None
-            self.cursor.execute(query)
-            _rows = self.cursor.fetchall()
-            if _rows:
-                rows = list()
-                for row in _rows:
-                    rows.append(row)
-                if len(rows) == 1:
-                    rows = rows[0]
+            with self.cursor() as cursor:
+                cursor.execute(query)
+                _rows = cursor.fetchall()
+                if _rows:
+                    rows = list()
+                    for row in _rows:
+                        rows.append(row)
+                    if len(row) == 1:
+                        rows = rows[0]
             return rows
         except mysql.Error as e:
-            msg = "Failure in executing query {0}. Error: {1}".format(query, e)
-            raise DatabaseError(msg)
+            raise DatabaseError(
+                f"Failure in executing query {query}. Error: {e}")
 
+    def post(self, query, data=None):
+        try:
+            with self.cursor() as cursor:
+                print(query)
+                print(data)
+                cursor.execute(query, params=data)
 
-myDataBase = Database("localhost", "root", "akagame", passwd="t")
+                if cursor.lastrowid is not None:
+                    return cursor.lastrowid
+                return cursor.rowcount
+        except mysql.Error as e:
+            raise DatabaseError(
+                f"Failure in executing query {query}. Error: {e}")
 
-res = myDataBase.mysql_query_get("SELECT * FROM account")
+    @contextlib.contextmanager
+    def cursor(self):
+        if not self._connected:
+            raise DatabaseError(
+                "An active database connection is needed to create a cursor.")
+        cursor = self._connection.cursor()
+        try:
+            yield cursor
+        except:
+            raise
+        finally:
+            cursor.close()
 
-for row in res:
-    print(row)
+    @property
+    def _connected(self):
+        connected = False
+        if self._connection is not None and self._connection.is_connected():
+            connected = True
+        return connected
+
+    # for row in res:
+    #     print(row)
 
 # print(mydb)
 
