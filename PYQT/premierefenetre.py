@@ -1,8 +1,7 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QDialog, QGroupBox, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QDialog, QGroupBox, QHBoxLayout, QVBoxLayout
 from PyQt5.QtCore import QRect
 from PyQt5 import QtCore
 from PyQt5 import QtGui
-import sys
 
 
 class Window(QMainWindow):
