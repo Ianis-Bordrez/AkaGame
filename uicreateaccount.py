@@ -1,75 +1,104 @@
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QMessageBox
 import sys
 from database import Database
 import uilogin
-
-SQL_INSERT = 'INSERT INTO {table}({columns}) VALUES ({placeholders})'
+import constinfo
 
 
 class WindowCreateAccount(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.title="Alkutiedot"
-        self.top=600
-        self.left=200
-        self.width=500
-        self.height=500
+        self.title = "Alkutiedot"
+        self.top = 600
+        self.left = 200
+        self.width = 500
+        self.height = 500
 
         self.initWindow()
 
     def initWindow(self):
 
-        self.lineedit1 = QLineEdit(self)
-        self.lineedit1.setPlaceholderText("Please Enter Your name")
-        self.lineedit1.setGeometry(200, 100, 200, 30)
+        self.username = QLineEdit(self)
+        self.username.setPlaceholderText("Please Enter Your username")
+        self.username.setGeometry(200, 100, 200, 30)
 
-        self.lineedit2 = QLineEdit(self)
-        self.lineedit2.setPlaceholderText("Please Enter Your password")
-        self.lineedit2.setGeometry(200, 150, 200, 30)
+        self.password = QLineEdit(self)
+        self.password.setPlaceholderText("Please Enter Your password")
+        self.password.setGeometry(200, 150, 200, 30)
 
-        self.lineedit3 = QLineEdit(self)
-        self.lineedit3.setPlaceholderText("Please Enter Your Emai")
-        self.lineedit3.setGeometry(200, 200, 200, 30)
+        self.email = QLineEdit(self)
+        self.email.setPlaceholderText("Please Enter Your Emai")
+        self.email.setGeometry(200, 200, 200, 30)
 
-        self.button = QPushButton("Create", self)
-        self.button.setGeometry(200, 250, 100, 30)
-        self.button.clicked.connect(self.insertData)
+        self.btn_create = QPushButton("Create", self)
+        self.btn_create.setGeometry(200, 250, 100, 30)
+        self.btn_create.clicked.connect(self.create_account)
 
-        self.button=QPushButton("Return", self)
-        self.button.move(100,400)
-        self.button.clicked.connect(self.btn_return)
+        self.btn_return = QPushButton("Return", self)
+        self.btn_return.move(100, 400)
+        self.btn_return.clicked.connect(self.return_login)
 
         self.setWindowTitle(self.title)
         self.setGeometry(self.top, self.left, self.width, self.height)
         self.show()
 
-    def insertData(self):
-        mysql_config = {"host": "localhost", "user": "root",
-                        "passwd": "", "database": "akagame"}
+    def create_account(self):
+        username = self.username.text()
+        password = self.password.text()
+        email = self.email.text()
 
-        myDataBase = Database(mysql_config)
-        myDataBase.connect()
-        columns = ('login', 'password', 'email')
+        if self.check_account(username, password, email):
 
-        table = 'account'
-        query = SQL_INSERT.format(
-            columns=','.join(columns), table=table,
-            placeholders=','.join(['%s' for i in range(len(columns))])
-        )
-        myDataBase.post(query, (self.lineedit1.text(),
-                                self.lineedit2.text(), self.lineedit3.text()))
+            myDataBase = Database(constinfo.mysql_config)
+            myDataBase.connect()
+            table = 'account'
+            query = constinfo.SQL_INSERT.format(
+                columns=','.join(constinfo.columns_create_account), table=table,
+                placeholders=','.join(['%s' for i in range(
+                    len(constinfo.columns_create_account))])
+            )
+            myDataBase.post(query, (username, password, email))
 
-        QMessageBox.about(self, "Connection", "Account created Successfully")
+            QMessageBox.about(self, "Connection",
+                              "Account created Successfully")
 
+            self.close()
+            self.next = uilogin.WindowLogin()
+
+    def check_account(self, username, password, email):
+        if self.check_username(username) or self.check_password(password) or self.check_email(email):
+            return True
+        return False
+
+    def check_username(self, username):
+        if len(username) > 24 or len(username) < 5:
+            QMessageBox.about(self, "Create Account",
+                              "Your username must be between 5 and 24 characters.")
+            return False
+
+        return True
+
+    def check_password(self, password):
+        if len(password) > 24 or len(password) < 5:
+            QMessageBox.about(self, "Create Account",
+                              "Your password must be between 5 and 24 characters.")
+            return False
+
+        return True
+
+        QMessageBox.about(self, "Create Account", "Password not valid")
+        return False
+
+    def check_email(self, email):
+        import re
+        result = re.search(r'\w+@\w+', email)
+        if result:
+            return True
+
+        QMessageBox.about(self, "Create Account", "Email not valid")
+        return False
+
+    def return_login(self):
         self.close()
-        self.next=uilogin.WindowLogin()
-
-    def quit(self):
-        print('close clicked')
-        self.close()
-
-    def btn_return(self):
-        self.close()
-        self.next=uilogin.WindowLogin()
+        self.next = uilogin.WindowLogin()
