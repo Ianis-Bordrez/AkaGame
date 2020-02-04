@@ -1,10 +1,6 @@
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QApplication
 import sys
-from database import Database
-
 from uilogin import WindowLogin
-
 
 if __name__ == '__main__':
     App = QApplication(sys.argv)
