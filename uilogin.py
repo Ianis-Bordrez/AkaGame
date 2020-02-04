@@ -1,7 +1,7 @@
 import constinfo
 import uicreateaccount
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QSize, Qt
 from database import Database
 from PyQt5.QtGui import QPixmap, QImage, QPalette, QBrush
 import sys
@@ -27,20 +27,28 @@ class WindowLogin(QMainWindow):
         self.lineedit1 = QLineEdit(self)
         self.lineedit1.setPlaceholderText("Please Enter Your name")
         self.lineedit1.setGeometry(540, 200, 200, 30)
+        self.lineedit1.setStyleSheet(
+            "background-color : transparent; color : black")
 
         self.lineedit2 = QLineEdit(self)
         self.lineedit2.setPlaceholderText("Please Enter Your password")
         self.lineedit2.setGeometry(540, 250, 200, 30)
+        self.lineedit2.setStyleSheet(
+            "background-color : transparent; color : black")
 
         self.button = QPushButton("Login", self)
-        self.button.resize(100, 60)
-        self.button.move(590, 300)
+        self.button.resize(150, 60)
+        self.button.move(565, 300)
+        self.button.setStyleSheet(
+            "background-color: transparent; font-size: 20px; border : 1px solid black")
         self.button.clicked.connect(self.btn_login)
 
-        self.button = QPushButton("Create Account", self)
-        self.button.resize(100, 60)
-        self.button.move(590, 370)
-        self.button.clicked.connect(self.btn_create_account)
+        self.button2 = QPushButton("Create Account", self)
+        self.button2.resize(150, 60)
+        self.button2.move(565, 370)
+        self.button2.setStyleSheet(
+            "background-color: transparent; font-size: 20px; border : 1px solid black")
+        self.button2.clicked.connect(self.btn_create_account)
 
         self.show()
 
