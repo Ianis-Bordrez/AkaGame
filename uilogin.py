@@ -1,29 +1,21 @@
+from PyQt5.QtWidgets import QLineEdit, QPushButton, QMessageBox
+from database import Database
+
 import constinfo
 import uicreateaccount
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QSize
-from database import Database
-from PyQt5.QtGui import QPixmap, QImage, QPalette, QBrush
-import sys
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QMessageBox
-from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QPushButton, QMessageBox, QLabel
-from PyQt5 import QtGui
+import ui
 
 
-class WindowLogin(QMainWindow):
+class WindowLogin(ui.Window):
     def __init__(self):
-        super().__init__()
-        self.InitLogin()
+        ui.Window.__init__(self, "Akagame | Connection")
+        self.init_window()
+        self.init_background("img/imgbckg.jpg")
+        self.init_lineedit()
+        self.init_button()
+        self.show()
 
-    def InitLogin(self):
-
-        self.setGeometry(600, 200, 1280, 800)
-        self.setWindowTitle("AkaGame")
-
-        self.label = QLabel(self)
-        self.label.setPixmap(QPixmap("img/imgbckg.jpg"))
-        self.label.setGeometry(0, 0, 1280, 800)
-
+    def init_lineedit(self):
         self.username = QLineEdit(self)
         self.username.setPlaceholderText("Please Enter Your name")
         self.username.setGeometry(540, 200, 200, 30)
@@ -32,6 +24,7 @@ class WindowLogin(QMainWindow):
         self.password.setPlaceholderText("Please Enter Your password")
         self.password.setGeometry(540, 250, 200, 30)
 
+    def init_button(self):
         self.btn_login = QPushButton("Login", self)
         self.btn_login.resize(100, 60)
         self.btn_login.move(590, 300)
@@ -41,8 +34,6 @@ class WindowLogin(QMainWindow):
         self.btn_create_account.resize(100, 60)
         self.btn_create_account.move(590, 370)
         self.btn_create_account.clicked.connect(self.create_account)
-
-        self.show()
 
     def login(self):
         if self.check_login(self.username.text(), self.password.text()):

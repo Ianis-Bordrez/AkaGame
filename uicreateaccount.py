@@ -1,24 +1,20 @@
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QMessageBox
-import sys
 from database import Database
 import uilogin
 import constinfo
+import ui
 
 
-class WindowCreateAccount(QMainWindow):
-
+class WindowCreateAccount(ui.Window):
     def __init__(self):
-        super().__init__()
-        self.title = "Alkutiedot"
-        self.top = 600
-        self.left = 200
-        self.width = 500
-        self.height = 500
+        ui.Window.__init__(self, "Akagame | Create account")
+        self.init_window()
+        self.init_background("img/imgbckg.jpg")
+        self.init_lineedit()
+        self.init_button()
+        self.show()
 
-        self.initWindow()
-
-    def initWindow(self):
-
+    def init_lineedit(self):
         self.username = QLineEdit(self)
         self.username.setPlaceholderText("Please Enter Your username")
         self.username.setGeometry(200, 100, 200, 30)
@@ -31,6 +27,7 @@ class WindowCreateAccount(QMainWindow):
         self.email.setPlaceholderText("Please Enter Your Emai")
         self.email.setGeometry(200, 200, 200, 30)
 
+    def init_button(self):
         self.btn_create = QPushButton("Create", self)
         self.btn_create.setGeometry(200, 250, 100, 30)
         self.btn_create.clicked.connect(self.create_account)
@@ -38,10 +35,6 @@ class WindowCreateAccount(QMainWindow):
         self.btn_return = QPushButton("Return", self)
         self.btn_return.move(100, 400)
         self.btn_return.clicked.connect(self.return_login)
-
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.top, self.left, self.width, self.height)
-        self.show()
 
     def create_account(self):
         username = self.username.text()
