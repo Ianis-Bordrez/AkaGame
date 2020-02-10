@@ -80,9 +80,6 @@ class WindowCreateAccount(ui.Window):
 
         return True
 
-        QMessageBox.about(self, "Create Account", "Password not valid")
-        return False
-
     def check_email(self, email):
         import re
         result = re.search(r'\w+@\w+', email)
