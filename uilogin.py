@@ -61,6 +61,7 @@ class WindowLogin(ui.Window):
         self.buttonview.clicked.connect(self.passShow)
 
     def passShow(self):
+        self.buttonview.setCheckable(True)
         if self.buttonview.isChecked():
             self.password.setEchoMode(QLineEdit.Normal)
         else:
