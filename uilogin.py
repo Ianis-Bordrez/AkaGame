@@ -71,7 +71,8 @@ class WindowLogin(ui.Window):
             self.close()
             if constinfo.player_id:
                 self.next = uimainmenu.WindowMainMenu()
-            self.next = uicreateplayer.WindowCreatePlayer()
+            else:
+                self.next = uicreateplayer.WindowCreatePlayer()
 
     def create_account(self):
         self.close()
@@ -91,5 +92,5 @@ class WindowLogin(ui.Window):
         # QMessageBox.about(self, "Connection", "Successful connection")
         query = f"SELECT id FROM player WHERE account_id={account_id[0]}"
         player = myDataBase.get(query)
-        constinfo.player_id = player
+        constinfo.player_id = player[0]
         return True

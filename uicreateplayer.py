@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel, QWidget
+from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel, QWidget, QMessageBox
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtCore import QRect
 from database import Database
@@ -55,8 +55,6 @@ class WindowCreatePlayer(ui.Window):
                                             QPixmap("img/char/arrow_2.2.png"), self.centralwidget)
         self.btn_switch_next.move(1100, 500)
         self.btn_switch_next.clicked.connect(lambda: self.switch(-1))
-        # self.btn_switch_next.setStyleSheet(
-        #     "QPushButton { background-image: img/char/arrow_2.png;}")
 
         self.btn_create = QPushButton("Create", self)
         self.btn_create.move(700, 845)
@@ -76,7 +74,7 @@ class WindowCreatePlayer(ui.Window):
 
     def create(self):
         name = self.name.text()
-        if len(name) > 12 and len(name) < 4:
+        if len(name) > 12 or len(name) < 4:
             QMessageBox.about(self, "Create_player",
                               "Your name must be between 5 and 12 characters.")
         else:
@@ -90,6 +88,7 @@ class WindowCreatePlayer(ui.Window):
             )
             myDataBase.post(query, (constinfo.account_id, name, 1))
 
+            self.close()
             self.next = uimainmenu.WindowMainMenu()
 
     def switch(self, nextt):

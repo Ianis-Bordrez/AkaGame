@@ -43,8 +43,6 @@ class Database:
     def post(self, query, data=None):
         try:
             with self.cursor() as cursor:
-                print(query)
-                print(data)
                 cursor.execute(query, params=data)
 
                 if cursor.lastrowid is not None:
@@ -73,39 +71,3 @@ class Database:
         if self._connection is not None and self._connection.is_connected():
             connected = True
         return connected
-
-    # for row in res:
-    #     print(row)
-
-# print(mydb)
-
-# if mydb:
-#     print("Connection successful !")
-# else:
-#     print("Connection unsuccessful !")
-
-# mycursor = mydb.cursor()
-
-# mycursor.execute("Show tables")
-
-# for db in mycursor:
-#     print(db)
-
-# sqlInsert = "INSERT INTO account(login,password,email) VALUES(%s,%s,%s)"
-
-# users = ("Laurent", "uyzyad", "laurent@gmail.com")
-
-# # mycursor.execute(sqlInsert, users)
-# # mydb.commit()
-
-# mycursor.execute("SELECT * FROM account")
-# myresult = mycursor.fetchone()
-# myresult2 = mycursor.fetchall()
-
-# for row in myresult:
-#     print(row)
-
-# print("---"*7)
-
-# for row in myresult2:
-#     print(row)

@@ -31,7 +31,6 @@ class PicButton(QAbstractButton):
 
     def paintEvent(self, event):
         pix = self.pixmap_hover if self.underMouse() else self.pixmap
-        print(self.isDown())
         if self.isDown():
             pix = self.pixmap_pressed
 
