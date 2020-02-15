@@ -19,52 +19,63 @@ class WindowCreateAccount(ui.Window):
     def init_lineedit(self):
         self.username = QLineEdit(self)
         self.username.setPlaceholderText("Please Enter Your username")
-        self.username.setGeometry(490, 100, 300, 30)
+        self.username.setGeometry(490, 200, 300, 30)
         self.username.setStyleSheet(
             "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px")
+        self.username.setAlignment(Qt.AlignCenter)
 
         self.password = QLineEdit(self)
         self.password.setPlaceholderText("Please Enter Your password")
-        self.password.setGeometry(490, 170, 300, 30)
+        self.password.setGeometry(490, 270, 300, 30)
         self.password.setStyleSheet(
             "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px")
+        self.password.setAlignment(Qt.AlignCenter)
 
         self.email = QLineEdit(self)
         self.email.setPlaceholderText("Please Enter Your Emai")
-        self.email.setGeometry(490, 240, 300, 30)
+        self.email.setGeometry(490, 340, 300, 30)
         self.email.setStyleSheet(
             "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px")
+        self.email.setAlignment(Qt.AlignCenter)
 
     def init_error_field(self):
         self.username_error_field = QLabel(self)
         self.username_error_field.setText("")
-        self.username_error_field.setGeometry(440, 130, 400, 30)
+        self.username_error_field.setGeometry(440, 230, 400, 30)
         self.username_error_field.setStyleSheet(
             "color: red; text-align : center")
         self.username_error_field.setAlignment(Qt.AlignCenter)
 
         self.password_error_field = QLabel(self)
         self.password_error_field.setText("")
-        self.password_error_field.setGeometry(440, 200, 400, 30)
+        self.password_error_field.setGeometry(440, 300, 400, 30)
         self.password_error_field.setStyleSheet(
             "color : red; text-align : center")
         self.password_error_field.setAlignment(Qt.AlignCenter)
 
         self.email_error_field = QLabel(self)
         self.email_error_field.setText("")
-        self.email_error_field.setGeometry(440, 270, 400, 30)
+        self.email_error_field.setGeometry(440, 370, 400, 30)
         self.email_error_field.setStyleSheet(
             "color : red; text-align : center")
         self.email_error_field.setAlignment(Qt.AlignCenter)
 
     def init_button(self):
         self.btn_create = QPushButton("Create", self)
-        self.btn_create.setGeometry(200, 300, 100, 30)
+        self.btn_create.resize(150, 60)
+        self.btn_create.move(565, 400)
         self.btn_create.clicked.connect(self.create_account)
+        self.btn_create.setStyleSheet("QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
+                                      "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
+                                      "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }")
 
         self.btn_return = QPushButton("Return", self)
-        self.btn_return.move(100, 400)
+        self.btn_return.resize(150, 60)
+        self.btn_return.move(565, 470)
         self.btn_return.clicked.connect(self.return_login)
+        self.btn_return.setStyleSheet("QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
+                                      "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
+                                      "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }")
 
     def error_username(self):
         self.username_error_field.setText(
