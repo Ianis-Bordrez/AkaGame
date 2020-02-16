@@ -154,7 +154,12 @@ class WindowCreateAccount(ui.Window):
                 placeholders=','.join(['%s' for i in range(
                     len(constinfo.columns_create_account))])
             )
-            myDataBase.post(query, (username, password, email))
+
+            status = "STUDENT"
+            if code == "ok":
+                status = "TEATCHER"
+
+            myDataBase.post(query, (username, password, email, status))
 
             QMessageBox.about(self, "Connection",
                               "Account created Successfully")
@@ -193,8 +198,9 @@ class WindowCreateAccount(ui.Window):
         return False
 
     def check_teatcher_code(self, code):
-        if code == "ok":
+        if code == "ok" or code == "":
             return True
+        print("marchepas")
         return False
 
     def return_login(self):

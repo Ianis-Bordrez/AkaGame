@@ -9,8 +9,6 @@ import uicreateaccount
 import uimainmenu
 import uicreateplayer
 
-status = "teatcer"
-
 
 class WindowLogin(ui.Window):
     def __init__(self):
@@ -73,7 +71,7 @@ class WindowLogin(ui.Window):
     def login(self):
         if self.check_login(self.username.text(), self.password.text()):
             self.close()
-            if status == "teatcher":
+            if constinfo.account_status == "TEATCHER":
                 self.next = uimainmenuteatcher.WindowTeatcher()
 
             elif constinfo.player_id:
@@ -89,15 +87,16 @@ class WindowLogin(ui.Window):
         myDataBase = Database(constinfo.mysql_config)
         myDataBase.connect()
 
-        query = f"SELECT id FROM account WHERE login='{username}' AND password='{password}'"
-        account_id = myDataBase.get(query)
-        if account_id is None:
+        query = f"SELECT id, status FROM account WHERE login='{username}' AND password='{password}'"
+        account_info = myDataBase.get(query)
+        if account_info is None:
             QMessageBox.about(self, "Connection", "Wrong username or password")
             return False
-        constinfo.account_id = account_id[0]
+        constinfo.account_id = account_info[0][0]
+        constinfo.account_status = account_info[0][1].pop()
 
         # QMessageBox.about(self, "Connection", "Successful connection")
-        query = f"SELECT id FROM player WHERE account_id={account_id[0]}"
+        query = f"SELECT id FROM player WHERE account_id={constinfo.account_id}"
         player = myDataBase.get(query)
         if player != None:
             constinfo.player_id = player[0]
