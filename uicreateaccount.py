@@ -193,6 +193,7 @@ class WindowCreateAccount(ui.Window):
         return False
 
     def check_teatcher_code(self, code):
+        if code == "ok":
             return True
         return False
 

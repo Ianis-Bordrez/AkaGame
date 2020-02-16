@@ -1,12 +1,15 @@
 from PyQt5.QtWidgets import QApplication, QLineEdit, QPushButton, QMessageBox
 from PyQt5.QtCore import Qt
 import ui
+import uimainmenuteatcher
 from database import Database
 
 import constinfo
 import uicreateaccount
 import uimainmenu
 import uicreateplayer
+
+status = "teatcer"
 
 
 class WindowLogin(ui.Window):
@@ -70,7 +73,10 @@ class WindowLogin(ui.Window):
     def login(self):
         if self.check_login(self.username.text(), self.password.text()):
             self.close()
-            if constinfo.player_id:
+            if status == "teatcher":
+                self.next = uimainmenuteatcher.WindowTeatcher()
+
+            elif constinfo.player_id:
                 self.next = uimainmenu.WindowMainMenu()
             else:
                 self.next = uicreateplayer.WindowCreatePlayer()
