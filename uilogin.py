@@ -93,5 +93,6 @@ class WindowLogin(ui.Window):
         # QMessageBox.about(self, "Connection", "Successful connection")
         query = f"SELECT id FROM player WHERE account_id={account_id[0]}"
         player = myDataBase.get(query)
-        constinfo.player_id = player[0]
+        if player != None:
+            constinfo.player_id = player[0]
         return True
