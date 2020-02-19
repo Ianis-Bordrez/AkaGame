@@ -16,5 +16,6 @@ columns_create_question = ('quiz_id', 'question',
                            'answer_true', 'answer_2', 'answer_3', 'answer_4')
 
 account_id = None
+account_status = None
 player_id = None
 teatcher_subject = None
