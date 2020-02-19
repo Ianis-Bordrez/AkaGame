@@ -1,5 +1,3 @@
-from uilogin import WindowLogin
-import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -10,7 +8,6 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt
 from database import Database
-import uilogin
 import constinfo
 import ui
 
@@ -160,8 +157,3 @@ class WindowCreateQuiz(ui.Window):
         password = "".join(random.choice(all_chars) for x in range(6))
         return password
 
-
-if __name__ == "__main__":
-    App = QApplication(sys.argv)
-    Window = WindowCreateQuiz()
-    sys.exit(App.exec())

@@ -57,12 +57,12 @@ class WindowChooseRoom(ui.Window):
 
     def start_game(self, subject):
         quiz_id = self.room.text()
-        if self.check_game(subject, quiz_id, room):
+        if self.check_game(subject, quiz_id):
             self.close()
             self.next = uigame.WindowGame(subject, quiz_id)
 
-    def check_game(self, subject, quiz_id, room):
-        if room != 6:
+    def check_game(self, subject, quiz_id):
+        if quiz_id != 6:
             return False
         myDataBase = Database(constinfo.mysql_config)
         myDataBase.connect()
