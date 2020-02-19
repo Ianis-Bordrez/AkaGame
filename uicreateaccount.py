@@ -102,6 +102,7 @@ class WindowCreateAccount(ui.Window):
             "")
 
     def create_account(self):
+        status = "STUDENT"
         username = self.username.text()
         password = self.password.text()
         email = self.email.text()
@@ -116,7 +117,7 @@ class WindowCreateAccount(ui.Window):
                 placeholders=','.join(['%s' for i in range(
                     len(constinfo.columns_create_account))])
             )
-            myDataBase.post(query, (username, password, email))
+            myDataBase.post(query, (username, password, email, status))
 
             QMessageBox.about(self, "Connection",
                               "Account created Successfully")

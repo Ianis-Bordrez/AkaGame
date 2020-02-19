@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton
 from database import Database
 import constinfo
 import ui
-import uichoosesubject
+import uichooseroom
 
 
 class WindowMainMenu(ui.Window):
@@ -21,8 +21,8 @@ class WindowMainMenu(ui.Window):
                                     "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
                                     "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }")
         self.btn_game.clicked.connect(
-            self.start_game)
+            self.choose_room)
 
-    def start_game(self):
+    def choose_room(self):
         self.close()
-        self.next = uichoosesubject.WindowChooseSubject()
+        self.next = uichooseroom.WindowChooseRoom()
