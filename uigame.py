@@ -20,6 +20,4 @@ class WindowGame(ui.Window):
 
     def init_button(self):
         pass
-        
-
 

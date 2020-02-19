@@ -1,13 +1,12 @@
 from PyQt5.QtWidgets import QApplication, QLineEdit, QPushButton, QMessageBox
 from PyQt5.QtCore import Qt
-import ui
-import uimainmenuteatcher
 from database import Database
-
+import ui
 import constinfo
 import uicreateaccount
 import uimainmenu
 import uicreateplayer
+import uimainmenuteatcher
 
 
 class WindowLogin(ui.Window):

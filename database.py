@@ -13,15 +13,14 @@ class DatabaseError(Exception):
 class Database:
     def __init__(self, settings):
         self.settings = settings
-        self.settings['autocommit'] = True
+        self.settings["autocommit"] = True
         self._connection = None
 
     def connect(self):
         try:
             self._connection = mysql.connect(**self.settings)
         except mysql.Error as e:
-            raise DatabaseError(
-                f"Failure in connecting to database. Error: {e}")
+            raise DatabaseError(f"Failure in connecting to database. Error: {e}")
 
     def get(self, query):
         try:
@@ -37,8 +36,7 @@ class Database:
                         rows = rows[0]
             return rows
         except mysql.Error as e:
-            raise DatabaseError(
-                f"Failure in executing query {query}. Error: {e}")
+            raise DatabaseError(f"Failure in executing query {query}. Error: {e}")
 
     def post(self, query, data=None):
         try:
@@ -49,14 +47,12 @@ class Database:
                     return cursor.lastrowid
                 return cursor.rowcount
         except mysql.Error as e:
-            raise DatabaseError(
-                f"Failure in executing query {query}. Error: {e}")
+            raise DatabaseError(f"Failure in executing query {query}. Error: {e}")
 
     @contextlib.contextmanager
     def cursor(self):
         if not self._connected:
-            raise DatabaseError(
-                "An active database connection is needed to create a cursor.")
+            raise DatabaseError("An active database connection is needed to create a cursor.")
         cursor = self._connection.cursor()
         try:
             yield cursor

@@ -43,16 +43,21 @@ class WindowCreatePlayer(ui.Window):
         self.name.setGeometry(680, 810, 140, 30)
 
     def init_button(self):
-        self.btn_switch_previous = ui.PicButton(QPixmap("img/char/arrow_1.png"),
-                                                QPixmap(
-                                                    "img/char/arrow_1.1.png"),
-                                                QPixmap("img/char/arrow_1.2.png"), self.centralwidget)
+        self.btn_switch_previous = ui.PicButton(
+            QPixmap("img/char/arrow_1.png"),
+            QPixmap("img/char/arrow_1.1.png"),
+            QPixmap("img/char/arrow_1.2.png"),
+            self.centralwidget,
+        )
         self.btn_switch_previous.move(400, 500)
         self.btn_switch_previous.clicked.connect(lambda: self.switch(1))
 
-        self.btn_switch_next = ui.PicButton(QPixmap("img/char/arrow_2.png"),
-                                            QPixmap("img/char/arrow_2.1.png"),
-                                            QPixmap("img/char/arrow_2.2.png"), self.centralwidget)
+        self.btn_switch_next = ui.PicButton(
+            QPixmap("img/char/arrow_2.png"),
+            QPixmap("img/char/arrow_2.1.png"),
+            QPixmap("img/char/arrow_2.2.png"),
+            self.centralwidget,
+        )
         self.btn_switch_next.move(1100, 500)
         self.btn_switch_next.clicked.connect(lambda: self.switch(-1))
 
@@ -75,16 +80,15 @@ class WindowCreatePlayer(ui.Window):
     def create(self):
         name = self.name.text()
         if len(name) > 12 or len(name) < 4:
-            QMessageBox.about(self, "Create_player",
-                              "Your name must be between 5 and 12 characters.")
+            QMessageBox.about(self, "Create_player", "Your name must be between 5 and 12 characters.")
         else:
             myDataBase = Database(constinfo.mysql_config)
             myDataBase.connect()
-            table = 'player'
+            table = "player"
             query = constinfo.SQL_INSERT.format(
-                columns=','.join(constinfo.columns_create_player), table=table,
-                placeholders=','.join(['%s' for i in range(
-                    len(constinfo.columns_create_player))])
+                columns=",".join(constinfo.columns_create_player),
+                table=table,
+                placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_player))]),
             )
             myDataBase.post(query, (constinfo.account_id, name, 1))
 
@@ -93,11 +97,9 @@ class WindowCreatePlayer(ui.Window):
 
     def switch(self, nextt):
         if self.sex == 0:
-            new_char = self.char_img_m[(
-                self.curr_char + nextt) % len(self.char_img_m)]
+            new_char = self.char_img_m[(self.curr_char + nextt) % len(self.char_img_m)]
         else:
-            new_char = self.char_img_w[(
-                self.curr_char + nextt) % len(self.char_img_w)]
+            new_char = self.char_img_w[(self.curr_char + nextt) % len(self.char_img_w)]
         self.display_char(new_char)
         self.curr_char += nextt
 
