@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QMessageBox, QLabel
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QMessageBox, QLabel, QComboBox, QWidget
 from PyQt5.QtCore import Qt
 from database import Database
 import uilogin
@@ -10,10 +10,13 @@ class WindowCreateAccount(ui.Window):
     def __init__(self):
         ui.Window.__init__(self, "Akagame | Create account")
         self.init_window()
+        self.centralwidget = QWidget(self)
+        self.setCentralWidget(self.centralwidget)
         self.init_background("img/imgbckg.jpg")
         self.init_lineedit()
         self.init_error_field()
         self.init_button()
+
         self.show()
 
     def init_lineedit(self):
@@ -44,7 +47,7 @@ class WindowCreateAccount(ui.Window):
 
         self.teatcher = QLineEdit(self)
         self.teatcher.setPlaceholderText("Please Enter Your Teatcher's Code")
-        self.teatcher.setGeometry(490, 680, 300, 30)
+        self.teatcher.setGeometry(490, 775, 300, 30)
         self.teatcher.setStyleSheet(
             "background-color : transparent; border : 2px solid white; border-radius: 5px; font-size : 19px; color : white;"
         )
@@ -102,6 +105,27 @@ class WindowCreateAccount(ui.Window):
         self.buttonview.setStyleSheet("background-image: url(img/view.png);  background-color: transparent")
         self.buttonview.clicked.connect(self.passShow)
 
+    def qwidgetwindow(self):
+        self.button_create_teatcher = QPushButton("Create a teacher account", self)
+        self.button_create_teatcher.resize(300, 70)
+        self.button_create_teatcher.move(490, 700)
+        self.button_create_teatcher.setStyleSheet(
+            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
+            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
+            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
+        )
+        self.button_create_teatcher.show()
+
+        self.scroll_subject_choose = QComboBox(self)
+        self.scroll_subject_choose.addItem("FRENCH")
+        self.scroll_subject_choose.addItem("MATHS")
+        self.scroll_subject_choose.addItem("HISTORY")
+        self.scroll_subject_choose.setGeometry(590, 535, 100, 30)
+        self.scroll_subject_choose.setStyleSheet(
+            "QComboBox {  border-radius: 3px; }" "QComboBox QAbstractItemView {  border-radius: 3px; }"
+        )
+        self.scroll_subject_choose.show()
+
     def passShow(self):
         self.buttonview.setCheckable(True)
         if self.buttonview.isChecked():
@@ -133,8 +157,15 @@ class WindowCreateAccount(ui.Window):
     def valid_teatcher(self):
         self.teatcher_error_field.setText("")
 
+    def query_create_account(self, myDataBase, table, query, username, password, email, status, subject):
+        if subject != "NONE":
+            subject = self.scroll_subject_choose.currentText()
+        myDataBase.post(query, (username, password, email, status, subject))
+        QMessageBox.about(self, "Connection", "Account created Successfully")
+        self.close()
+        self.next = uilogin.WindowLogin()
+
     def create_account(self):
-        status = "STUDENT"
         username = self.username.text()
         password = self.password.text()
         email = self.email.text()
@@ -150,17 +181,19 @@ class WindowCreateAccount(ui.Window):
                 table=table,
                 placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_account))]),
             )
-
-            status = "STUDENT"
             if code == "ok":
                 status = "TEATCHER"
-
-            myDataBase.post(query, (username, password, email, status))
-
-            QMessageBox.about(self, "Connection", "Account created Successfully")
-
-            self.close()
-            self.next = uilogin.WindowLogin()
+                self.qwidgetwindow()
+                subject = self.scroll_subject_choose.currentText()
+                self.button_create_teatcher.clicked.connect(
+                    lambda: self.query_create_account(
+                        myDataBase, table, query, username, password, email, status, subject
+                    )
+                )
+            else:
+                status = "STUDENT"
+                subject = "NONE"
+                self.query_create_account(myDataBase, table, query, username, password, email, status, subject)
 
     def check_account(self, username, password, email, code):
         if (
@@ -201,7 +234,6 @@ class WindowCreateAccount(ui.Window):
     def check_teatcher_code(self, code):
         if code == "ok" or code == "":
             return True
-        print("marchepas")
         return False
 
     def return_login(self):
