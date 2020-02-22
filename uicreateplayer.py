@@ -14,10 +14,8 @@ class WindowCreatePlayer(ui.Window):
         self.init_background("img/bckg_create_char.jpg")
 
         self.centralwidget = QWidget(self)
-        self.sex = 0
+        self.gender = 1
         self.curr_char = 0
-        self.char_img_m = ("char_m_1.png", "char_m_2.png", "char_m_3.png")
-        self.char_img_w = ("char_w_1.png", "char_w_2.png", "char_w_3.png")
 
         self.init_lineedit()
         self.init_display_char()
@@ -30,10 +28,10 @@ class WindowCreatePlayer(ui.Window):
     def init_display_char(self):
         self.char = QLabel(self.centralwidget)
         self.char.setGeometry(QRect(300, 50, 841, 720))
-        if self.sex == 0:
-            self.char.setPixmap(QPixmap(f"img/char/{self.char_img_m[0]}"))
+        if self.gender == 1:
+            self.char.setPixmap(QPixmap(f"img/char/{constinfo.char_img_m[self.curr_char]}"))
         else:
-            self.char.setPixmap(QPixmap(f"img/char/{self.char_img_w[0]}"))
+            self.char.setPixmap(QPixmap(f"img/char/{constinfo.char_img_w[self.curr_char]}"))
 
         self.char.setScaledContents(True)
 
@@ -70,12 +68,12 @@ class WindowCreatePlayer(ui.Window):
         self.btn_sex.clicked.connect(self.change_sex)
 
     def change_sex(self):
-        if self.sex == 0:
-            self.sex = 1
-            self.char.setPixmap(QPixmap(f"img/char/{self.char_img_w[0]}"))
+        if self.gender == 1:
+            self.gender = 2
+            self.char.setPixmap(QPixmap(f"img/char/{constinfo.char_img_w[0]}"))
         else:
-            self.sex = 0
-            self.char.setPixmap(QPixmap(f"img/char/{self.char_img_m[0]}"))
+            self.gender = 1
+            self.char.setPixmap(QPixmap(f"img/char/{constinfo.char_img_m[0]}"))
 
     def create(self):
         name = self.name.text()
@@ -88,18 +86,19 @@ class WindowCreatePlayer(ui.Window):
                 table=table,
                 placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_player))]),
             )
-            self.myDataBase.post(query, (constinfo.account_id, name, 1))
+            self.myDataBase.post(query, (constinfo.account_id, name, constinfo.player_char, self.gender))
 
             self.close()
             self.next = uimainmenu.WindowMainMenu()
 
     def switch(self, nextt):
-        if self.sex == 0:
-            new_char = self.char_img_m[(self.curr_char + nextt) % len(self.char_img_m)]
+        if self.gender == 1:
+            new_char = constinfo.char_img_m[(self.curr_char + nextt) % len(constinfo.char_img_m)]
         else:
-            new_char = self.char_img_w[(self.curr_char + nextt) % len(self.char_img_w)]
+            new_char = constinfo.char_img_w[(self.curr_char + nextt) % len(constinfo.char_img_w)]
         self.display_char(new_char)
         self.curr_char += nextt
+        constinfo.player_char = (self.curr_char + nextt) % len(constinfo.char_img_w)
 
     def display_char(self, path):
         self.char.setPixmap(QPixmap(f"img/char/{path}"))
