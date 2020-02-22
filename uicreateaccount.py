@@ -157,7 +157,7 @@ class WindowCreateAccount(ui.Window):
     def valid_teatcher(self):
         self.teatcher_error_field.setText("")
 
-    def query_create_account(self, myDataBase, table, query, username, password, email, status, subject):
+    def query_create_account(self, table, query, username, password, email, status, subject):
         if subject != "NONE":
             subject = self.scroll_subject_choose.currentText()
         self.myDataBase.post(query, (username, password, email, status, subject))
@@ -183,9 +183,7 @@ class WindowCreateAccount(ui.Window):
                 status = "TEATCHER"
                 subject = self.scroll_subject_choose.currentText()
                 self.button_create_teatcher.clicked.connect(
-                    lambda: self.query_create_account(
-                        table, query, username, password, email, status, subject
-                    )
+                    lambda: self.query_create_account(table, query, username, password, email, status, subject)
                 )
             else:
                 status = "STUDENT"
