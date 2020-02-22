@@ -27,7 +27,7 @@ class WindowChooseRoom(ui.Window):
         self.room.setMaxLength(6)
 
     def init_subject(self):
-        
+
         subject = self.myDataBase.get("SELECT DISTINCT id,subject FROM quiz")
 
         self.scroll_subject_choose = QComboBox(self)
@@ -35,6 +35,9 @@ class WindowChooseRoom(ui.Window):
         self.scroll_subject_choose.setStyleSheet(
             "QComboBox {  border-radius: 3px; }" "QComboBox QAbstractItemView {  border-radius: 3px; }"
         )
+        if subject is None:
+            self.scroll_subject_choose.addItem("Aucun quiz")
+            return False
         for sub in subject:
             self.scroll_subject_choose.addItem(sub[1].pop())
 
@@ -48,6 +51,7 @@ class WindowChooseRoom(ui.Window):
             "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
             "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
         )
+
     def init_error_lbl(self):
         self.lbl_error = QLabel(self)
         self.lbl_error.setGeometry(440, 230, 400, 30)
@@ -74,7 +78,6 @@ class WindowChooseRoom(ui.Window):
                 self.lbl_error.setText("Vous avez déjà fait le quiz.")
             else:
                 return True
-                
         else:
             print("2")
             self.lbl_error.setText("Le quiz n'existe pas.")

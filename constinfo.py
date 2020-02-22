@@ -6,7 +6,12 @@ SQL_UPDATE = """
     WHERE project_id = {project_id}
 """
 
-mysql_config = {"host": "localhost", "user": "root", "passwd": "", "database": "akagame"}
+mysql_config = {
+    "host": "mysql-ianis-bordrez.alwaysdata.net",
+    "user": "173945_akagame",
+    "passwd": "AK4ee65rù51",
+    "database": "ianis-bordrez_akagame",
+}
 
 columns_create_account = ("login", "password", "email", "status", "subject")
 columns_create_player = ("account_id", "name", "class")
