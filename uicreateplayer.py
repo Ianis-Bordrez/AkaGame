@@ -82,15 +82,13 @@ class WindowCreatePlayer(ui.Window):
         if len(name) > 12 or len(name) < 4:
             QMessageBox.about(self, "Create_player", "Your name must be between 5 and 12 characters.")
         else:
-            myDataBase = Database(constinfo.mysql_config)
-            myDataBase.connect()
             table = "player"
             query = constinfo.SQL_INSERT.format(
                 columns=",".join(constinfo.columns_create_player),
                 table=table,
                 placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_player))]),
             )
-            myDataBase.post(query, (constinfo.account_id, name, 1))
+            self.myDataBase.post(query, (constinfo.account_id, name, 1))
 
             self.close()
             self.next = uimainmenu.WindowMainMenu()

@@ -160,7 +160,7 @@ class WindowCreateAccount(ui.Window):
     def query_create_account(self, myDataBase, table, query, username, password, email, status, subject):
         if subject != "NONE":
             subject = self.scroll_subject_choose.currentText()
-        myDataBase.post(query, (username, password, email, status, subject))
+        self.myDataBase.post(query, (username, password, email, status, subject))
         QMessageBox.about(self, "Connection", "Account created Successfully")
         self.close()
         self.next = uilogin.WindowLogin()
@@ -173,8 +173,6 @@ class WindowCreateAccount(ui.Window):
 
         if self.check_account(username, password, email, code):
 
-            myDataBase = Database(constinfo.mysql_config)
-            myDataBase.connect()
             table = "account"
             query = constinfo.SQL_INSERT.format(
                 columns=",".join(constinfo.columns_create_account),
@@ -183,17 +181,16 @@ class WindowCreateAccount(ui.Window):
             )
             if code == "ok":
                 status = "TEATCHER"
-                self.qwidgetwindow()
                 subject = self.scroll_subject_choose.currentText()
                 self.button_create_teatcher.clicked.connect(
                     lambda: self.query_create_account(
-                        myDataBase, table, query, username, password, email, status, subject
+                        table, query, username, password, email, status, subject
                     )
                 )
             else:
                 status = "STUDENT"
                 subject = "NONE"
-                self.query_create_account(myDataBase, table, query, username, password, email, status, subject)
+                self.query_create_account(table, query, username, password, email, status, subject)
 
     def check_account(self, username, password, email, code):
         if (

@@ -88,11 +88,9 @@ class WindowLogin(ui.Window):
         self.next = uicreateaccount.WindowCreateAccount()
 
     def check_login(self, username, password):
-        myDataBase = Database(constinfo.mysql_config)
-        myDataBase.connect()
 
         query = f"SELECT id, status FROM account WHERE login='{username}' AND password='{password}'"
-        account_info = myDataBase.get(query)
+        account_info = self.myDataBase.get(query)
         if account_info is None:
             QMessageBox.about(self, "Connection", "Wrong username or password")
             return False
@@ -101,7 +99,7 @@ class WindowLogin(ui.Window):
         constinfo.account_status = account_info[0][1].pop()
 
         query = f"SELECT id FROM player WHERE account_id={constinfo.account_id}"
-        player = myDataBase.get(query)
+        player = self.myDataBase.get(query)
         if player != None:
             constinfo.player_id = player[0]
         return True

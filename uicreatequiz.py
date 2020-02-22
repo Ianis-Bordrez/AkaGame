@@ -105,17 +105,14 @@ class WindowCreateQuiz(ui.Window):
         quiz_number = None
 
         if self.check_quiz(question, answ_true, answ2, answ3, answ4):
-            myDataBase = Database(constinfo.mysql_config)
-            myDataBase.connect()
-            print(quiz_name)
 
-            quiz_number = myDataBase.get(f"SELECT quiz_id FROM quiz WHERE name='{quiz_name}'")
+            quiz_number = self.myDataBase.get(f"SELECT quiz_id FROM quiz WHERE name='{quiz_name}'")
 
             if not quiz_number:
 
                 quiz_number = self.generate_quiz_number()
 
-                while myDataBase.get(f"SELECT quiz_id FROM quiz WHERE quiz_id='{quiz_number}'"):
+                while self.myDataBase.get(f"SELECT quiz_id FROM quiz WHERE quiz_id='{quiz_number}'"):
                     quiz_number = self.generate_quiz_number()
 
                 constinfo.teatcher_subject = "MATHS"
@@ -126,7 +123,7 @@ class WindowCreateQuiz(ui.Window):
                     table=table,
                     placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_quiz))]),
                 )
-                myDataBase.post(
+                self.myDataBase.post(
                     query, (quiz_number, constinfo.teatcher_subject, quiz_name,),
                 )
             else:
@@ -138,7 +135,7 @@ class WindowCreateQuiz(ui.Window):
                 table=table,
                 placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_question))]),
             )
-            myDataBase.post(query, (quiz_number, question, answ_true, answ2, answ3, answ4))
+            self.myDataBase.post(query, (quiz_number, question, answ_true, answ2, answ3, answ4))
 
     def quiz_exist(self, database, name):
         database.get(f"SELECT name FROM quiz WHERE name='{name}'")

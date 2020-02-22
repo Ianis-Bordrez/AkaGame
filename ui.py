@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel, QAbstractButton
 from PyQt5.QtGui import QPixmap, QPainter
+from database import Database
+import constinfo
 
 
 class Window(QMainWindow):
@@ -8,6 +10,9 @@ class Window(QMainWindow):
         self.width = width
         self.height = height
         self.windowTitle = title
+
+        self.myDataBase = Database(constinfo.mysql_config)
+        self.myDataBase.connect()
 
     def init_window(self):
         self.setGeometry(300, 50, self.width, self.height)

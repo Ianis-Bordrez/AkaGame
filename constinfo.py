@@ -12,6 +12,7 @@ columns_create_account = ("login", "password", "email", "status", "subject")
 columns_create_player = ("account_id", "name", "class")
 columns_create_quiz = ("quiz_id", "subject", "name")
 columns_create_question = ("quiz_id", "question", "answer_true", "answer_2", "answer_3", "answer_4")
+columns_create_marks = ("account_id", "subject", "quiz_id", "mark")
 
 account_id = None
 account_status = None
