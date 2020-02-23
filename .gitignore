@@ -7,3 +7,7 @@ __pycache__/uilogin.cpython-38.pyc
 __pycache__/uimainmenu.cpython-38.pyc
 __pycache__/uistat.cpython-38.pyc
 .vscode/settings.json
+__pycache__/database.cpython-38.pyc
+__pycache__/ui.cpython-38.pyc
+__pycache__/uicreatequiz.cpython-38.pyc
+__pycache__/uimainmenuteatcher.cpython-38.pyc

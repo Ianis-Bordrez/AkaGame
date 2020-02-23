@@ -1,10 +1,5 @@
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import (
-    QLineEdit,
-    QPushButton,
-    QLabel,
-)
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QComboBox, QLineEdit, QPushButton, QLabel
+from PyQt5.QtCore import Qt, QTimer
 from database import Database
 import constinfo
 import ui
@@ -17,8 +12,15 @@ class WindowCreateQuiz(ui.Window):
         self.init_window()
         self.init_background("img/imgbckg.jpg")
 
+        self.qTimer = QTimer()
+        self.qTimer.setInterval(500)
+        self.qTimer.timeout.connect(self.getcombobox_values)
+        self.qTimer.start()
+
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
+
+        self.init_create_quiz()
 
         self.init_lineedit()
         self.init_button()
@@ -27,53 +29,66 @@ class WindowCreateQuiz(ui.Window):
 
         self.show()
 
-    def init_lineedit(self):
-        self.quiz_name = QLineEdit(self.centralwidget)
-        self.quiz_name.setPlaceholderText("Please Enter Your quiz name")
-        self.quiz_name.setGeometry(20, 100, 1200, 30)
-        self.quiz_name.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
+    def getcombobox_values(self):
+        if self.scroll_quiz_choose.currentText() == "Créer un quiz":
+            self.quiz_name.show()
+        else:
+            self.quiz_name.hide()
+
+    def init_create_quiz(self):
+        self.lbl_quiz_choose = QLabel(self.centralwidget)
+        self.lbl_quiz_choose.setGeometry(330, 275, 150, 30)
+        self.lbl_quiz_choose.setText("Choisissez un quiz")
+        self.lbl_quiz_choose.setAlignment(Qt.AlignRight)
+        self.lbl_quiz_choose.setStyleSheet("font-size : 17px;")
+
+        self.scroll_quiz_choose = QComboBox(self.centralwidget)
+        self.scroll_quiz_choose.setGeometry(30, 20, 250, 30)
+        self.scroll_quiz_choose.setStyleSheet(
+            "QComboBox {  border-radius: 3px; }" "QComboBox QAbstractItemView {  border-radius: 3px; text }"
         )
+
+        self.quiz_name = QLineEdit(self.centralwidget)
+        self.quiz_name.setPlaceholderText("Veuillez entrer le nom du quiz")
+        self.quiz_name.setGeometry(300, 20, 300, 30)
+        self.quiz_name.setStyleSheet(constinfo.stylesheet_lineedit)
         self.quiz_name.setAlignment(Qt.AlignCenter)
 
+        quiz_list = self.myDataBase.get("SELECT DISTINCT quiz_id,subject,name FROM quiz")
+
+        self.scroll_quiz_choose.addItem("Créer un quiz")
+        for quiz in quiz_list:
+            self.scroll_quiz_choose.addItem(quiz[2])
+
+    def init_lineedit(self):
         self.question = QLineEdit(self.centralwidget)
         self.question.setPlaceholderText("Please Enter Your question")
-        self.question.setGeometry(20, 200, 1200, 30)
-        self.question.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
-        )
+        self.question.setGeometry(20, 200, 800, 30)
+        self.question.setStyleSheet(constinfo.stylesheet_lineedit)
         self.question.setAlignment(Qt.AlignCenter)
 
         self.answ_true = QLineEdit(self.centralwidget)
         self.answ_true.setPlaceholderText("Please Enter answer 1 (Correct answer)")
-        self.answ_true.setGeometry(20, 270, 1200, 30)
-        self.answ_true.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
-        )
+        self.answ_true.setGeometry(20, 270, 800, 30)
+        self.answ_true.setStyleSheet(constinfo.stylesheet_lineedit)
         self.answ_true.setAlignment(Qt.AlignCenter)
 
         self.answ2 = QLineEdit(self.centralwidget)
         self.answ2.setPlaceholderText("Please Enter answer 2")
-        self.answ2.setGeometry(20, 340, 1200, 30)
-        self.answ2.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
-        )
+        self.answ2.setGeometry(20, 340, 800, 30)
+        self.answ2.setStyleSheet(constinfo.stylesheet_lineedit)
         self.answ2.setAlignment(Qt.AlignCenter)
 
         self.answ3 = QLineEdit(self.centralwidget)
         self.answ3.setPlaceholderText("Please Enter answer 3")
-        self.answ3.setGeometry(20, 420, 1200, 30)
-        self.answ3.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
-        )
+        self.answ3.setGeometry(20, 420, 800, 30)
+        self.answ3.setStyleSheet(constinfo.stylesheet_lineedit)
         self.answ3.setAlignment(Qt.AlignCenter)
 
         self.answ4 = QLineEdit(self.centralwidget)
         self.answ4.setPlaceholderText("Please Enter answer 4")
         self.answ4.setGeometry(20, 500, 1200, 30)
-        self.answ4.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
-        )
+        self.answ4.setStyleSheet(constinfo.stylesheet_lineedit)
         self.answ4.setAlignment(Qt.AlignCenter)
 
     def init_button(self):
@@ -127,6 +142,11 @@ class WindowCreateQuiz(ui.Window):
             )
             self.myDataBase.post(query, (quiz_number, question, answ_true, answ2, answ3, answ4))
 
+            self.answ_true.clear()
+            self.answ2.clear()
+            self.answ3.clear()
+            self.answ4.clear()
+
     def quiz_exist(self, database, name):
         database.get(f"SELECT name FROM quiz WHERE name='{name}'")
 
@@ -144,3 +164,13 @@ class WindowCreateQuiz(ui.Window):
         password = "".join(random.choice(all_chars) for x in range(6))
         return password
 
+
+from PyQt5.QtWidgets import QApplication
+import sys
+from uilogin import WindowLogin
+
+
+if __name__ == "__main__":
+    App = QApplication(sys.argv)
+    Window = WindowCreateQuiz()
+    sys.exit(App.exec())

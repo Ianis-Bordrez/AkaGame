@@ -16,7 +16,7 @@ class Window(QMainWindow):
         self.myDataBase.connect()
 
     def init_window(self):
-        self.setGeometry(300, 50, self.width, self.height)
+        self.setFixedSize(self.width, self.height)
         self.setWindowTitle(self.windowTitle)
 
     def init_background(self, path):

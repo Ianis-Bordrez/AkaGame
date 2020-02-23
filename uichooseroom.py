@@ -12,18 +12,19 @@ class WindowChooseRoom(ui.Window):
         ui.Window.__init__(self, "AkaGame | Choose game")
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
+
+        self.centralwidget = QWidget(self)
+        self.setCentralWidget(self.centralwidget)
+
         self.init_subject()
         self.init_lineedit()
         self.init_button()
         self.init_error_lbl()
 
-        self.centralwidget = QWidget(self)
         self.gender = 1
         self.curr_char = 0
 
         self.init_display_char()
-
-        self.setCentralWidget(self.centralwidget)
 
         self.show()
 
