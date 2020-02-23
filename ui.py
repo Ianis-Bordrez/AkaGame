@@ -27,7 +27,7 @@ class Window(QMainWindow):
     def init_title(self, title):
         self.title = QLabel(self)
         self.title.setText(title)
-        self.title.setGeometry(440, 100, 400, 30)
+        self.title.setGeometry(440, 100, 400, 50)
         self.title.setStyleSheet("background-color : transparent; color : black; font-size : 30px;")
         self.title.setAlignment(Qt.AlignCenter)
 

@@ -21,6 +21,7 @@ class WindowStat(ui.Window):
         self.centralwidget = QWidget(self)
 
         self.init_display_char()
+        self.init_display_gold()
 
         self.setCentralWidget(self.centralwidget)
 
@@ -64,6 +65,25 @@ class WindowStat(ui.Window):
             subject_note.setStyleSheet("font-size : 27px; color : red")
 
     def init_display_char(self):
+        self.char = QLabel(self.centralwidget)
+        self.char.setGeometry(QRect(385, 230, 500, 500))
+        query = self.myDataBase.get(f"SELECT path_char FROM player WHERE id={constinfo.player_id}")
+        self.char.setPixmap(QPixmap(query[0]))
+        self.char.setScaledContents(True)
+
+    def init_display_gold(self):
+        self.gold = QLabel(self.centralwidget)
+        self.gold.setGeometry(QRect(100, 20, 120, 120))
+        self.gold.setPixmap(QPixmap("img/gold.png"))
+        self.gold.setScaledContents(True)
+
+        self.gold_num = QLabel(self)
+        self.gold_num.setGeometry(255, 60, 250, 50)
+        print(self.myDataBase.get(f"SELECT gold FROM player WHERE id={constinfo.player_id}")[0])
+        self.gold_num.setText(str(self.myDataBase.get(f"SELECT gold FROM player WHERE id={constinfo.player_id}")[0]))
+        self.gold_num.setStyleSheet("font-size : 30px;")
+
+    def init_display_xp(self):
         self.char = QLabel(self.centralwidget)
         self.char.setGeometry(QRect(385, 230, 500, 500))
         query = self.myDataBase.get(f"SELECT path_char FROM player WHERE id={constinfo.player_id}")
