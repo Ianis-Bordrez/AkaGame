@@ -10,42 +10,60 @@ class WindowCreateAccount(ui.Window):
     def __init__(self):
         ui.Window.__init__(self, "Akagame | Create account")
         self.init_window()
+        self.init_background("img/imgbckg.jpg")
+
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
-        self.init_background("img/imgbckg.jpg")
+
         self.init_lineedit()
         self.init_error_field()
+        self.init_label()
         self.init_button()
+
+        self.btn_return = ui.ReturnButton(uilogin.WindowLogin, self.close, parent=self.centralwidget)
 
         self.show()
 
+    def init_label(self):
+        self.lbl_username = QLabel(self.centralwidget)
+        self.lbl_username.setGeometry(330, 205, 150, 30)
+        self.lbl_username.setText("Nom d'utilisateur")
+        self.lbl_username.setAlignment(Qt.AlignRight)
+        self.lbl_username.setStyleSheet("font-size : 17px;")
+
+        self.lbl_password = QLabel(self.centralwidget)
+        self.lbl_password.setGeometry(330, 275, 150, 30)
+        self.lbl_password.setText("Mot de passe")
+        self.lbl_password.setAlignment(Qt.AlignRight)
+        self.lbl_password.setStyleSheet("font-size : 17px;")
+
+        self.lbl_email = QLabel(self.centralwidget)
+        self.lbl_email.setGeometry(330, 345, 150, 30)
+        self.lbl_email.setText("Email")
+        self.lbl_email.setAlignment(Qt.AlignRight)
+        self.lbl_email.setStyleSheet("font-size : 17px;")
+
     def init_lineedit(self):
-        self.username = QLineEdit(self)
+        self.username = QLineEdit(self.centralwidget)
         self.username.setPlaceholderText("Please Enter Your username")
         self.username.setGeometry(490, 200, 300, 30)
-        self.username.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
-        )
+        self.username.setStyleSheet(constinfo.stylesheet_lineedit)
         self.username.setAlignment(Qt.AlignCenter)
 
-        self.password = QLineEdit(self)
+        self.password = QLineEdit(self.centralwidget)
         self.password.setPlaceholderText("Please Enter Your password")
         self.password.setGeometry(490, 270, 300, 30)
-        self.password.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
-        )
+        self.password.setStyleSheet(constinfo.stylesheet_lineedit)
         self.password.setAlignment(Qt.AlignCenter)
         self.password.setEchoMode(QLineEdit.Password)
 
-        self.email = QLineEdit(self)
+        self.email = QLineEdit(self.centralwidget)
         self.email.setPlaceholderText("Please Enter Your Emai")
         self.email.setGeometry(490, 340, 300, 30)
-        self.email.setStyleSheet(
-            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
-        )
+        self.email.setStyleSheet(constinfo.stylesheet_lineedit)
         self.email.setAlignment(Qt.AlignCenter)
 
-        self.teatcher = QLineEdit(self)
+        self.teatcher = QLineEdit(self.centralwidget)
         self.teatcher.setPlaceholderText("Please Enter Your Teatcher's Code")
         self.teatcher.setGeometry(490, 775, 300, 30)
         self.teatcher.setStyleSheet(
@@ -54,69 +72,52 @@ class WindowCreateAccount(ui.Window):
         self.teatcher.setAlignment(Qt.AlignCenter)
 
     def init_error_field(self):
-        self.username_error_field = QLabel(self)
+        self.username_error_field = QLabel(self.centralwidget)
         self.username_error_field.setText("")
         self.username_error_field.setGeometry(440, 230, 400, 30)
         self.username_error_field.setStyleSheet("color: red; text-align : center")
         self.username_error_field.setAlignment(Qt.AlignCenter)
 
-        self.password_error_field = QLabel(self)
+        self.password_error_field = QLabel(self.centralwidget)
         self.password_error_field.setText("")
         self.password_error_field.setGeometry(440, 300, 400, 30)
         self.password_error_field.setStyleSheet("color : red; text-align : center")
         self.password_error_field.setAlignment(Qt.AlignCenter)
 
-        self.email_error_field = QLabel(self)
+        self.email_error_field = QLabel(self.centralwidget)
         self.email_error_field.setText("")
         self.email_error_field.setGeometry(440, 370, 400, 30)
         self.email_error_field.setStyleSheet("color : red; text-align : center")
         self.email_error_field.setAlignment(Qt.AlignCenter)
 
-        self.teatcher_error_field = QLabel(self)
+        self.teatcher_error_field = QLabel(self.centralwidget)
         self.teatcher_error_field.setText("")
         self.teatcher_error_field.setGeometry(440, 230, 400, 30)
         self.teatcher_error_field.setStyleSheet("color: red; text-align : center")
         self.teatcher_error_field.setAlignment(Qt.AlignCenter)
 
     def init_button(self):
-        self.btn_create = QPushButton("Create", self)
+        self.btn_create = QPushButton("Create", self.centralwidget)
         self.btn_create.resize(150, 60)
         self.btn_create.move(565, 400)
         self.btn_create.clicked.connect(self.create_account)
-        self.btn_create.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-        )
-
-        self.btn_return = QPushButton("Return", self)
-        self.btn_return.resize(150, 60)
-        self.btn_return.move(565, 470)
-        self.btn_return.clicked.connect(self.return_login)
-        self.btn_return.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-        )
+        self.btn_create.setStyleSheet(constinfo.stylesheet_main_button)
 
         self.buttonview = QPushButton(self)
         self.buttonview.resize(33, 19)
         self.buttonview.move(800, 275)
         self.buttonview.setStyleSheet("background-image: url(img/view.png);  background-color: transparent")
         self.buttonview.clicked.connect(self.passShow)
+        self.buttonview.setCheckable(True)
 
     def qwidgetwindow(self):
-        self.button_create_teatcher = QPushButton("Create a teacher account", self)
+        self.button_create_teatcher = QPushButton("Create a teacher account", self.centralwidget)
         self.button_create_teatcher.resize(300, 70)
         self.button_create_teatcher.move(490, 700)
-        self.button_create_teatcher.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-        )
+        self.button_create_teatcher.setStyleSheet(constinfo.stylesheet_main_button)
         self.button_create_teatcher.show()
 
-        self.scroll_subject_choose = QComboBox(self)
+        self.scroll_subject_choose = QComboBox(self.centralwidget)
         self.scroll_subject_choose.addItem("FRENCH")
         self.scroll_subject_choose.addItem("MATHS")
         self.scroll_subject_choose.addItem("HISTORY")
@@ -127,7 +128,6 @@ class WindowCreateAccount(ui.Window):
         self.scroll_subject_choose.show()
 
     def passShow(self):
-        self.buttonview.setCheckable(True)
         if self.buttonview.isChecked():
             self.password.setEchoMode(QLineEdit.Normal)
         else:
@@ -231,6 +231,3 @@ class WindowCreateAccount(ui.Window):
             return True
         return False
 
-    def return_login(self):
-        self.close()
-        self.next = uilogin.WindowLogin()

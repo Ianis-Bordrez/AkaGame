@@ -13,7 +13,6 @@ class WindowGame(ui.Window):
         ui.Window.__init__(self, "AkaGame | Game")
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
-        self.centralwidget = QWidget(self)
 
         self.quiz_id = quiz_id
         self.curr_question = 0
@@ -42,7 +41,6 @@ class WindowGame(ui.Window):
         self.answ_grid.addWidget(self.btn_verif, 2, 1, 1, 2)
         self.btn_verif.clicked.connect(self.verif_question)
 
-        self.setCentralWidget(self.centralwidget)
         self.show()
 
     def init_answer(self, curr_question):
@@ -85,7 +83,7 @@ class WindowGame(ui.Window):
                 self.true_answer_count += 1
             else:
                 self.false_answer_count += 1
-        
+
         self.curr_question += 1
 
         if self.curr_question == self.total_question:
@@ -95,10 +93,15 @@ class WindowGame(ui.Window):
                 table=table,
                 placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_marks))]),
             )
-            self.myDataBase.post(query, (constinfo.account_id, self.subject, self.quiz_id, self.true_answer_count*20/self.total_question))
+            self.myDataBase.post(
+                query,
+                (constinfo.account_id, self.subject, self.quiz_id, self.true_answer_count * 20 / self.total_question),
+            )
 
             self.close()
-            self.next = WindowEndGameStat(self.subject, self.true_answer_count, self.false_answer_count, self.total_question)
+            self.next = WindowEndGameStat(
+                self.subject, self.true_answer_count, self.false_answer_count, self.total_question
+            )
         else:
             self.new_question(self.curr_question)
 
@@ -114,6 +117,7 @@ class WindowGame(ui.Window):
         self.answer3.setText(self.res[question][question_number[rand[2]]])
         self.answer4.setText(self.res[question][question_number[rand[3]]])
 
+
 class WindowEndGameStat(ui.Window):
     def __init__(self, subject, true_answer, false_answer, total_question):
         ui.Window.__init__(self, "AkaGame | Game")
@@ -125,9 +129,6 @@ class WindowEndGameStat(ui.Window):
         self.false_answer = false_answer
         self.total_question = total_question
 
-        self.centralwidget = QWidget(self)
-        self.setCentralWidget(self.centralwidget)
-
         self.wdg_answer = QWidget(self.centralwidget)
         self.wdg_answer.setGeometry(100, 100, 300, 200)
 
@@ -137,25 +138,24 @@ class WindowEndGameStat(ui.Window):
 
         self.show()
 
-
     def init_answer(self):
         self.lbl_true_answer = QLabel(self.wdg_answer)
         self.lbl_true_answer.setGeometry(440, 230, 400, 30)
         self.lbl_true_answer.setText(f"Réponses justes : {self.true_answer}")
         self.lbl_true_answer.setStyleSheet("color: green; text-align : center")
-        self.lbl_true_answer.move(0,0)
+        self.lbl_true_answer.move(0, 0)
 
         self.lbl_false_answer = QLabel(self.wdg_answer)
         self.lbl_false_answer.setGeometry(440, 250, 400, 30)
         self.lbl_false_answer.setText(f"Réponses fausses : {self.false_answer}")
         self.lbl_false_answer.setStyleSheet("color: red; text-align : center")
-        self.lbl_false_answer.move(0,15)
+        self.lbl_false_answer.move(0, 15)
 
         self.lbl_false_answer = QLabel(self.wdg_answer)
         self.lbl_false_answer.setGeometry(440, 270, 400, 30)
         self.lbl_false_answer.setText(f"Note finale : {self.true_answer} / {self.total_question}")
         self.lbl_false_answer.setStyleSheet("color: blue; text-align : center")
-        self.lbl_false_answer.move(0,30)
+        self.lbl_false_answer.move(0, 30)
 
     def init_return_btn(self):
         self.btn_return = QPushButton("Return", self)
@@ -171,6 +171,7 @@ class WindowEndGameStat(ui.Window):
     def return_login(self):
         self.close()
         self.next = uimainmenu.WindowMainMenu()
+
 
 from PyQt5.QtWidgets import QApplication
 import sys
