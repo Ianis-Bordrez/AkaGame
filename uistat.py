@@ -54,6 +54,15 @@ class WindowStat(ui.Window):
 
         self.show()
 
+    def note_color(self, subject_marks, subject_note):
+        moy = mean(subject_marks)
+        if moy > 15:
+            subject_note.setStyleSheet("font-size : 27px; color : green")
+        elif moy > 10:
+            subject_note.setStyleSheet("font-size : 27px; color : yellow")
+        else:
+            subject_note.setStyleSheet("font-size : 27px; color : red")
+
     def init_display_char(self):
         self.char = QLabel(self.centralwidget)
         self.char.setGeometry(QRect(385, 230, 500, 500))
@@ -87,31 +96,35 @@ class WindowStat(ui.Window):
         self.french_note.setGeometry(1100, 45, 600, 60)
         if self.french_marks != []:
             self.french_note.setText(str(mean(self.french_marks)))
+            self.note_color(self.french_marks, self.french_note)
         else:
             self.french_note.setText("Pas de note")
-        self.french_note.setStyleSheet("font-size : 27px;")
+            self.french_note.setStyleSheet("font-size : 27px;")
 
         self.english_note = QLabel(self)
         self.english_note.setGeometry(1100, 100, 600, 60)
         if self.english_marks != []:
             self.english_note.setText(str(mean(self.english_marks)))
+            self.note_color(self.english_marks, self.english_note)
         else:
             self.english_note.setText("Pas de note")
-        self.english_note.setStyleSheet("font-size : 27px;")
+            self.english_note.setStyleSheet("font-size : 27px;")
 
         self.maths_note = QLabel(self)
         self.maths_note.setGeometry(1100, 155, 600, 60)
-        print(self.maths_marks)
         if self.maths_marks != []:
             self.maths_note.setText(str(mean(self.maths_marks)))
+            self.note_color(self.maths_marks, self.maths_note)
         else:
             self.maths_note.setText("Pas de note")
-        self.maths_note.setStyleSheet("font-size : 27px;")
+            self.maths_note.setStyleSheet("font-size : 27px;")
 
         self.history_note = QLabel(self)
         self.history_note.setGeometry(1100, 210, 600, 60)
         if self.history_marks != []:
             self.history_note.setText(str(mean(self.history_marks)))
+            self.note_color(self.history_marks, self.history_note)
         else:
             self.history_note.setText("Pas de note")
-        self.history_note.setStyleSheet("font-size : 27px;")
+            self.history_note.setStyleSheet("font-size : 27px;")
+
