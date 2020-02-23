@@ -27,3 +27,14 @@ teatcher_subject = None
 
 char_img_m = ("char_m_1.png", "char_m_2.png", "char_m_3.png", "char_m_4.png")
 char_img_w = ("char_w_1.png", "char_w_2.png", "char_w_3.png", "char_w_4.png")
+
+stylesheet_lineedit = (
+    "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px;"
+)
+
+stylesheet_main_button = """
+    QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px; }
+    QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px; }
+    QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px; }
+"""
+

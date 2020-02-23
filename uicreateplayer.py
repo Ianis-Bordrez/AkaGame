@@ -1,10 +1,11 @@
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel, QWidget, QMessageBox
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QRect
 from database import Database
 import uimainmenu
 import constinfo
 import ui
+import uilogin
 
 
 class WindowCreatePlayer(ui.Window):
@@ -14,6 +15,8 @@ class WindowCreatePlayer(ui.Window):
         self.init_background("img/bckg_create_char.jpg")
 
         self.centralwidget = QWidget(self)
+        self.setCentralWidget(self.centralwidget)
+
         self.gender = 1
         self.curr_char = 0
 
@@ -21,7 +24,7 @@ class WindowCreatePlayer(ui.Window):
         self.init_display_char()
         self.init_button()
 
-        self.setCentralWidget(self.centralwidget)
+        self.btn_return = ui.ReturnButton(uilogin.WindowLogin, self.close, name="Annuler", parent=self.centralwidget)
 
         self.show()
 
@@ -36,7 +39,7 @@ class WindowCreatePlayer(ui.Window):
         self.char.setScaledContents(True)
 
     def init_lineedit(self):
-        self.name = QLineEdit(self)
+        self.name = QLineEdit(self.centralwidget)
         self.name.setPlaceholderText("Please Enter Your player name")
         self.name.setGeometry(520, 50, 240, 30)
         self.name.setStyleSheet(

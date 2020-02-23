@@ -1,12 +1,9 @@
-from PyQt5.QtWidgets import QApplication, QLineEdit, QPushButton, QMessageBox, QLabel
+from PyQt5.QtWidgets import QLabel, QWidget
 from PyQt5.QtCore import Qt
 from database import Database
 import ui
 import constinfo
-import uicreateaccount
 import uimainmenu
-import uicreateplayer
-import uimainmenuteatcher
 from statistics import mean
 
 
@@ -15,6 +12,9 @@ class WindowStat(ui.Window):
         ui.Window.__init__(self, "Akagame | Connection")
         self.init_window()
         self.init_background("img/imgbckg.jpg")
+
+        self.centralwidget = QWidget(self)
+        self.setCentralWidget(self.centralwidget)
 
         subject = self.myDataBase.get(f"SELECT subject,mark FROM marks WHERE account_id={constinfo.account_id}")
         self.french_marks = []
@@ -34,6 +34,8 @@ class WindowStat(ui.Window):
                 self.history_marks.append(sub[1])
 
         self.init_lineedit()
+
+        self.btn_return = ui.ReturnButton(uimainmenu.WindowMainMenu, self.close, parent=self.centralwidget)
 
         self.show()
 

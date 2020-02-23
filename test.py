@@ -82,12 +82,14 @@ class WindowGame(ui.Window):
                 self.true_answer_count += 1
             else:
                 self.false_answer_count += 1
-        
+
         self.curr_question += 1
 
         if self.curr_question == self.total_question:
             self.close()
-            self.next = WindowEndGameStat(self.subject, self.true_answer_count, self.false_answer_count, self.total_question)
+            self.next = WindowEndGameStat(
+                self.subject, self.true_answer_count, self.false_answer_count, self.total_question
+            )
         else:
             self.new_question(self.curr_question)
 
@@ -102,6 +104,7 @@ class WindowGame(ui.Window):
         self.answer2.setText(self.res[question][question_number[rand[1]]])
         self.answer3.setText(self.res[question][question_number[rand[2]]])
         self.answer4.setText(self.res[question][question_number[rand[3]]])
+
 
 class WindowEndGameStat(ui.Window):
     def __init__(self, subject, true_answer, false_answer, total_question):
@@ -126,8 +129,7 @@ class WindowEndGameStat(ui.Window):
         self.btn_return.resize(150, 60)
         self.btn_return.move(565, 470)
         self.btn_return.clicked.connect(self.test)
-        
-        
+
         self.test = -1
 
         self.show()
@@ -141,7 +143,7 @@ class WindowEndGameStat(ui.Window):
             self.lbl_ttest.setGeometry(500, 230, 400, 30)
             self.lbl_ttest.setText(f"Réponses justes : {self.true_answer}")
             self.lbl_ttest.setStyleSheet("color: green; text-align : center")
-            self.lbl_ttest.move(50,50)
+            self.lbl_ttest.move(50, 50)
             self.wdg_answer.show()
             print("1")
             self.test = 1
@@ -150,25 +152,25 @@ class WindowEndGameStat(ui.Window):
             self.test = 0
             print("2")
 
-
     def init_answer(self):
         self.lbl_true_answer = QLabel(self.wdg_answer)
         self.lbl_true_answer.setGeometry(440, 230, 400, 30)
         self.lbl_true_answer.setText(f"Réponses justes : {self.true_answer}")
         self.lbl_true_answer.setStyleSheet("color: green; text-align : center")
-        self.lbl_true_answer.move(0,0)
+        self.lbl_true_answer.move(0, 0)
 
         self.lbl_false_answer = QLabel(self.wdg_answer)
         self.lbl_false_answer.setGeometry(440, 250, 400, 30)
         self.lbl_false_answer.setText(f"Réponses fausses : {self.false_answer}")
         self.lbl_false_answer.setStyleSheet("color: red; text-align : center")
-        self.lbl_false_answer.move(0,15)
+        self.lbl_false_answer.move(0, 15)
 
         self.lbl_false_answer = QLabel(self.wdg_answer)
         self.lbl_false_answer.setGeometry(440, 270, 400, 30)
         self.lbl_false_answer.setText(f"Note finale : {self.true_answer} / {self.total_question}")
         self.lbl_false_answer.setStyleSheet("color: blue; text-align : center")
-        self.lbl_false_answer.move(0,30)
+        self.lbl_false_answer.move(0, 30)
+
 
 from PyQt5.QtWidgets import QApplication
 import sys

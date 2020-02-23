@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QAbstractButton
+from PyQt5.QtWidgets import QMainWindow, QLabel, QAbstractButton, QPushButton, QWidget
 from PyQt5.QtGui import QPixmap, QPainter
 from database import Database
+from PyQt5.QtCore import QRect
 import constinfo
 
 
@@ -50,3 +51,17 @@ class PicButton(QAbstractButton):
 
     def sizeHint(self):
         return self.pixmap.size()
+
+
+class ReturnButton(QPushButton):
+    def __init__(self, previous_window, close_parent_window, name="Retour", x=1100, y=820, parent=None):
+        super(ReturnButton, self).__init__(parent)
+        self.resize(150, 60)
+        self.setText(name)
+        self.move(x, y)
+        self.clicked.connect(lambda: self.return_login(previous_window, close_parent_window))
+        self.setStyleSheet(constinfo.stylesheet_main_button)
+
+    def return_login(self, previous_window, close_parent_window):
+        close_parent_window()
+        self.next = previous_window()

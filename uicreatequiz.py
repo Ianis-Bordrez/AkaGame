@@ -1,15 +1,14 @@
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import (
-    QMainWindow,
     QLineEdit,
     QPushButton,
-    QMessageBox,
     QLabel,
 )
 from PyQt5.QtCore import Qt
 from database import Database
 import constinfo
 import ui
+import uimainmenuteatcher
 
 
 class WindowCreateQuiz(ui.Window):
@@ -17,12 +16,19 @@ class WindowCreateQuiz(ui.Window):
         ui.Window.__init__(self, "Akagame | Create Quiz")
         self.init_window()
         self.init_background("img/imgbckg.jpg")
+
+        self.centralwidget = QWidget(self)
+        self.setCentralWidget(self.centralwidget)
+
         self.init_lineedit()
         self.init_button()
+
+        self.btn_return = ui.ReturnButton(uimainmenuteatcher.WindowTeatcher, self.close, parent=self.centralwidget)
+
         self.show()
 
     def init_lineedit(self):
-        self.quiz_name = QLineEdit(self)
+        self.quiz_name = QLineEdit(self.centralwidget)
         self.quiz_name.setPlaceholderText("Please Enter Your quiz name")
         self.quiz_name.setGeometry(20, 100, 1200, 30)
         self.quiz_name.setStyleSheet(
@@ -30,7 +36,7 @@ class WindowCreateQuiz(ui.Window):
         )
         self.quiz_name.setAlignment(Qt.AlignCenter)
 
-        self.question = QLineEdit(self)
+        self.question = QLineEdit(self.centralwidget)
         self.question.setPlaceholderText("Please Enter Your question")
         self.question.setGeometry(20, 200, 1200, 30)
         self.question.setStyleSheet(
@@ -38,7 +44,7 @@ class WindowCreateQuiz(ui.Window):
         )
         self.question.setAlignment(Qt.AlignCenter)
 
-        self.answ_true = QLineEdit(self)
+        self.answ_true = QLineEdit(self.centralwidget)
         self.answ_true.setPlaceholderText("Please Enter answer 1 (Correct answer)")
         self.answ_true.setGeometry(20, 270, 1200, 30)
         self.answ_true.setStyleSheet(
@@ -46,7 +52,7 @@ class WindowCreateQuiz(ui.Window):
         )
         self.answ_true.setAlignment(Qt.AlignCenter)
 
-        self.answ2 = QLineEdit(self)
+        self.answ2 = QLineEdit(self.centralwidget)
         self.answ2.setPlaceholderText("Please Enter answer 2")
         self.answ2.setGeometry(20, 340, 1200, 30)
         self.answ2.setStyleSheet(
@@ -54,7 +60,7 @@ class WindowCreateQuiz(ui.Window):
         )
         self.answ2.setAlignment(Qt.AlignCenter)
 
-        self.answ3 = QLineEdit(self)
+        self.answ3 = QLineEdit(self.centralwidget)
         self.answ3.setPlaceholderText("Please Enter answer 3")
         self.answ3.setGeometry(20, 420, 1200, 30)
         self.answ3.setStyleSheet(
@@ -62,7 +68,7 @@ class WindowCreateQuiz(ui.Window):
         )
         self.answ3.setAlignment(Qt.AlignCenter)
 
-        self.answ4 = QLineEdit(self)
+        self.answ4 = QLineEdit(self.centralwidget)
         self.answ4.setPlaceholderText("Please Enter answer 4")
         self.answ4.setGeometry(20, 500, 1200, 30)
         self.answ4.setStyleSheet(
@@ -71,25 +77,11 @@ class WindowCreateQuiz(ui.Window):
         self.answ4.setAlignment(Qt.AlignCenter)
 
     def init_button(self):
-        self.btn_create = QPushButton("Create", self)
+        self.btn_create = QPushButton("Create", self.centralwidget)
         self.btn_create.resize(150, 60)
         self.btn_create.move(565, 600)
         self.btn_create.clicked.connect(self.create_quiz)
-        self.btn_create.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-        )
-
-        self.btn_cancel = QPushButton("cancel", self)
-        self.btn_cancel.resize(150, 60)
-        self.btn_cancel.move(565, 670)
-        self.btn_cancel.clicked.connect(self.cancel)
-        self.btn_cancel.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-        )
+        self.btn_create.setStyleSheet(constinfo.stylesheet_main_button)
 
     def cancel(self):
         self.close()
@@ -114,8 +106,6 @@ class WindowCreateQuiz(ui.Window):
 
                 while self.myDataBase.get(f"SELECT quiz_id FROM quiz WHERE quiz_id='{quiz_number}'"):
                     quiz_number = self.generate_quiz_number()
-
-                constinfo.teatcher_subject = "MATHS"
 
                 table = "quiz"
                 query = constinfo.SQL_INSERT.format(
