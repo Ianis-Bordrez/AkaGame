@@ -25,8 +25,8 @@ player_id = None
 player_char = ""
 teatcher_subject = None
 
-char_img_m = ("char_m_1.png", "char_m_2.png", "char_m_3.png", "char_m_4.png")
-char_img_w = ("char_w_1.png", "char_w_2.png", "char_w_3.png", "char_w_4.png")
+char_img_m = ("char_m_1.png", "char_m_2.png", "char_m_3.png", "char_m_0.png")
+char_img_w = ("char_w_1.png", "char_w_2.png", "char_w_3.png", "char_w_0.png")
 
 stylesheet_lineedit = (
     "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px;"

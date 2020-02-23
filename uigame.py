@@ -13,6 +13,8 @@ class WindowGame(ui.Window):
         ui.Window.__init__(self, "AkaGame | Game")
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
+        self.centralwidget = QWidget(self)
+        self.setCentralWidget(self.centralwidget)
 
         self.quiz_id = quiz_id
         self.curr_question = 0

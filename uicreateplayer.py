@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel, QWidget, QMessageBox
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QRect
-from database import Database
 import uimainmenu
 import constinfo
 import ui
@@ -94,6 +93,11 @@ class WindowCreatePlayer(ui.Window):
             self.char.setPixmap(QPixmap(f"img/char/{constinfo.char_img_m[0]}"))
 
     def create(self):
+        gen = "w"
+        if self.gender == 1:
+            gen = "m"
+        constinfo.player_char = f"img/char/char_{gen}_{(self.curr_char + 1) % len(constinfo.char_img_m)}.png"
+        print(constinfo.player_char)
         name = self.name.text()
         if len(name) > 12 or len(name) < 4:
             QMessageBox.about(self, "Create_player", "Your name must be between 5 and 12 characters.")
@@ -105,22 +109,22 @@ class WindowCreatePlayer(ui.Window):
                 placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_player))]),
             )
             self.myDataBase.post(query, (constinfo.account_id, name, constinfo.player_char, self.gender))
+            constinfo.player_id = self.myDataBase.get(f"SELECT id FROM player WHERE account_id={constinfo.account_id}")[
+                0
+            ]
 
             self.close()
             self.next = uimainmenu.WindowMainMenu()
 
     def switch(self, nextt):
+        print(nextt)
         if self.gender == 1:
             new_char = constinfo.char_img_m[(self.curr_char + nextt) % len(constinfo.char_img_m)]
         else:
             new_char = constinfo.char_img_w[(self.curr_char + nextt) % len(constinfo.char_img_w)]
         self.display_char(new_char)
         self.curr_char += nextt
-        gen = "w"
-        if self.gender == 1:
-            gen = "m"
-        constinfo.player_char = f"img/char/char_{gen}_{(self.curr_char + nextt-1) % len(constinfo.char_img_m)+1}.png"
-        print(constinfo.player_char)
+        print(self.curr_char)
 
     def display_char(self, path):
         self.char.setPixmap(QPixmap(f"img/char/{path}"))

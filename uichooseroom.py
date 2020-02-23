@@ -1,7 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QComboBox, QLabel, QWidget
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QComboBox, QLabel, QWidget, QProgressBar
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QPixmap
-from database import Database
 import constinfo
 import uigame
 import ui
@@ -14,24 +13,34 @@ class WindowChooseRoom(ui.Window):
         self.init_background("img/bckg_create_char.jpg")
 
         self.centralwidget = QWidget(self)
+
+        self.init_display_char()
+
         self.setCentralWidget(self.centralwidget)
 
         self.init_subject()
         self.init_lineedit()
         self.init_button()
         self.init_error_lbl()
-
-        self.gender = 1
-        self.curr_char = 0
-
-        self.init_display_char()
+        self.init_hp_bar()
 
         self.show()
+
+    def init_hp_bar(self):
+        self.hp_bar = QProgressBar(self.centralwidget)
+        self.hp_bar.setGeometry(500, 150, 300, 30)
+        self.hp_bar.setMaximum(100)
+        query_curr_hp = self.myDataBase.get(f"SELECT HP FROM player WHERE account_id={constinfo.account_id}")
+        self.hp_bar.setValue(query_curr_hp[0])
+        self.hp_bar.setStyleSheet(
+            "QProgressBar { border: 2px solid grey; border-radius: 5px;text-align: center }"
+            "QProgressBar::chunk {background-color: red}"
+        )
 
     def init_display_char(self):
         self.char = QLabel(self.centralwidget)
         self.char.setGeometry(QRect(350, 180, 600, 600))
-        query = self.myDataBase.get("SELECT path_char FROM player")
+        query = self.myDataBase.get(f"SELECT path_char FROM player WHERE id={constinfo.player_id}")
         self.char.setPixmap(QPixmap(query[0]))
 
         self.char.setScaledContents(True)
@@ -39,7 +48,7 @@ class WindowChooseRoom(ui.Window):
     def init_lineedit(self):
         self.room = QLineEdit(self)
         self.room.setPlaceholderText("Please Enter The Room Number")
-        self.room.setGeometry(810, 210, 260, 30)
+        self.room.setGeometry(880, 210, 260, 30)
         self.room.setStyleSheet(
             "background-color : transparent; color : white; border : 1px solid white; border-radius: 5px; font-size : 17px"
         )
@@ -51,7 +60,7 @@ class WindowChooseRoom(ui.Window):
         subject = self.myDataBase.get("SELECT DISTINCT id,subject FROM quiz")
 
         self.scroll_subject_choose = QComboBox(self)
-        self.scroll_subject_choose.setGeometry(590, 400, 100, 30)
+        self.scroll_subject_choose.setGeometry(950, 300, 100, 30)
         self.scroll_subject_choose.setStyleSheet(
             "QComboBox {  border-radius: 3px; }" "QComboBox QAbstractItemView {  border-radius: 3px; }"
         )
@@ -64,7 +73,7 @@ class WindowChooseRoom(ui.Window):
     def init_button(self):
         self.btn_join_room = QPushButton("Rejoindre", self)
         self.btn_join_room.resize(150, 60)
-        self.btn_join_room.move(565, 700)
+        self.btn_join_room.move(565, 780)
         self.btn_join_room.clicked.connect(self.join_room)
         self.btn_join_room.setStyleSheet(
             "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
