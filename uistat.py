@@ -79,7 +79,6 @@ class WindowStat(ui.Window):
 
         self.gold_num = QLabel(self)
         self.gold_num.setGeometry(255, 60, 250, 50)
-        print(self.myDataBase.get(f"SELECT gold FROM player WHERE id={constinfo.player_id}")[0])
         self.gold_num.setText(str(self.myDataBase.get(f"SELECT gold FROM player WHERE id={constinfo.player_id}")[0]))
         self.gold_num.setStyleSheet("font-size : 30px;")
 
