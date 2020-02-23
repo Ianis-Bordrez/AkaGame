@@ -12,6 +12,7 @@ class WindowCreatePlayer(ui.Window):
         ui.Window.__init__(self, "AkaGame | Create Player")
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
+        self.init_title("Création du personnage")
 
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)

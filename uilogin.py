@@ -14,6 +14,7 @@ class WindowLogin(ui.Window):
         ui.Window.__init__(self, "Akagame | Connection")
         self.init_window()
         self.init_background("img/imgbckg.jpg")
+        self.init_title("Connexion")
 
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)

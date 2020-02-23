@@ -1,28 +1,35 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel, QAbstractButton, QPushButton, QWidget
 from PyQt5.QtGui import QPixmap, QPainter
 from database import Database
-from PyQt5.QtCore import QRect
+from PyQt5.QtCore import QRect, Qt
 import constinfo
 
 
 class Window(QMainWindow):
-    def __init__(self, title, width=1280, height=900):
+    def __init__(self, window_title, width=1280, height=900):
         super().__init__()
         self.width = width
         self.height = height
-        self.windowTitle = title
+        self.windowTitle = window_title
 
         self.myDataBase = Database(constinfo.mysql_config)
         self.myDataBase.connect()
 
     def init_window(self):
-        self.setFixedSize(self.width, self.height)
+        self.setFixedSize(1280, 900)
         self.setWindowTitle(self.windowTitle)
 
     def init_background(self, path):
         self.background = QLabel(self)
         self.background.setPixmap(QPixmap(path))
-        self.background.setGeometry(0, 0, self.width, self.height)
+        self.background.setGeometry(0, 0, 1280, 900)
+
+    def init_title(self, title):
+        self.title = QLabel(self)
+        self.title.setText(title)
+        self.title.setGeometry(440, 100, 400, 30)
+        self.title.setStyleSheet("background-color : transparent; color : black; font-size : 30px;")
+        self.title.setAlignment(Qt.AlignCenter)
 
 
 class PicButton(QAbstractButton):
