@@ -14,7 +14,7 @@ mysql_config = {
 }
 
 columns_create_account = ("login", "password", "email", "status", "subject")
-columns_create_player = ("account_id", "name", "class", "gender")
+columns_create_player = ("account_id", "name", "path_char", "gender")
 columns_create_quiz = ("quiz_id", "subject", "name")
 columns_create_question = ("quiz_id", "question", "answer_true", "answer_2", "answer_3", "answer_4")
 columns_create_marks = ("account_id", "subject", "quiz_id", "mark")
@@ -22,7 +22,7 @@ columns_create_marks = ("account_id", "subject", "quiz_id", "mark")
 account_id = None
 account_status = None
 player_id = None
-player_char = 0
+player_char = ""
 teatcher_subject = None
 
 char_img_m = ("char_m_1.png", "char_m_2.png", "char_m_3.png", "char_m_4.png")
