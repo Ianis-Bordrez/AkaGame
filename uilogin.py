@@ -29,48 +29,41 @@ class WindowLogin(ui.Window):
         self.lbl_username.setGeometry(350, 205, 150, 30)
         self.lbl_username.setText("Nom d'utilisateur")
         self.lbl_username.setAlignment(Qt.AlignRight)
-        self.lbl_username.setStyleSheet(stylesheet)
+        self.lbl_username.setStyleSheet(constinfo.stylesheet_main_button)
 
         self.lbl_password = QLabel(self.centralwidget)
         self.lbl_password.setGeometry(350, 255, 150, 30)
         self.lbl_password.setText("Mot de passe")
         self.lbl_password.setAlignment(Qt.AlignRight)
-        self.lbl_password.setStyleSheet(stylesheet)
+        self.lbl_password.setStyleSheet(constinfo.stylesheet_main_button)
 
     def init_lineedit(self):
-        stylesheet = "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px;"
         self.username = QLineEdit(self.centralwidget)
         self.username.setPlaceholderText("Please Enter Your name")
         self.username.setGeometry(510, 200, 260, 30)
-        self.username.setStyleSheet(stylesheet)
+        self.username.setStyleSheet(constinfo.stylesheet_lineedit)
         self.username.setAlignment(Qt.AlignCenter)
         self.username.setMaxLength(24)
 
         self.password = QLineEdit(self.centralwidget)
         self.password.setPlaceholderText("Please Enter Your password")
         self.password.setGeometry(510, 250, 260, 30)
-        self.password.setStyleSheet(stylesheet)
+        self.password.setStyleSheet(constinfo.stylesheet_lineedit)
         self.password.setAlignment(Qt.AlignCenter)
         self.password.setMaxLength(24)
         self.password.setEchoMode(QLineEdit.Password)
 
     def init_button(self):
-        stylesheet = """
-        QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }
-        QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }
-        QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }
-        """
-
         self.btn_login = QPushButton("Login", self.centralwidget)
         self.btn_login.resize(150, 60)
         self.btn_login.move(565, 300)
-        self.btn_login.setStyleSheet(stylesheet)
+        self.btn_login.setStyleSheet(constinfo.stylesheet_main_button)
         self.btn_login.clicked.connect(self.login)
 
         self.btn_create_account = QPushButton("Create Account", self.centralwidget)
         self.btn_create_account.resize(150, 60)
         self.btn_create_account.move(565, 370)
-        self.btn_create_account.setStyleSheet(stylesheet)
+        self.btn_create_account.setStyleSheet(constinfo.stylesheet_main_button)
         self.btn_create_account.clicked.connect(self.create_account)
 
         self.buttonview = QPushButton(self.centralwidget)
@@ -78,9 +71,9 @@ class WindowLogin(ui.Window):
         self.buttonview.move(775, 257)
         self.buttonview.setStyleSheet("background-image: url(img/view.png);  background-color: transparent;")
         self.buttonview.clicked.connect(self.passShow)
+        self.buttonview.setCheckable(True)
 
     def passShow(self):
-        self.buttonview.setCheckable(True)
         if self.buttonview.isChecked():
             self.password.setEchoMode(QLineEdit.Normal)
         else:
