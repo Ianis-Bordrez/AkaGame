@@ -54,7 +54,7 @@ class WindowCreatePlayer(ui.Window):
             self.centralwidget,
         )
         self.btn_switch_previous.move(250, 500)
-        self.btn_switch_previous.clicked.connect(lambda: self.switch(1))
+        self.btn_switch_previous.clicked.connect(lambda: self.switch(-1))
 
         self.btn_switch_next = ui.PicButton(
             QPixmap("img/char/arrow_2.png"),
@@ -63,7 +63,7 @@ class WindowCreatePlayer(ui.Window):
             self.centralwidget,
         )
         self.btn_switch_next.move(1000, 500)
-        self.btn_switch_next.clicked.connect(lambda: self.switch(-1))
+        self.btn_switch_next.clicked.connect(lambda: self.switch(1))
 
         self.btn_create = QPushButton("Create", self)
         self.btn_create.move(565, 790)
@@ -116,7 +116,11 @@ class WindowCreatePlayer(ui.Window):
             new_char = constinfo.char_img_w[(self.curr_char + nextt) % len(constinfo.char_img_w)]
         self.display_char(new_char)
         self.curr_char += nextt
-        constinfo.player_char = (self.curr_char + nextt) % len(constinfo.char_img_w)
+        gen = "w"
+        if self.gender == 1:
+            gen = "m"
+        constinfo.player_char = f"img/char/char_{gen}_{(self.curr_char + nextt-1) % len(constinfo.char_img_m)+1}.png"
+        print(constinfo.player_char)
 
     def display_char(self, path):
         self.char.setPixmap(QPixmap(f"img/char/{path}"))

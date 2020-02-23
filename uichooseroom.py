@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QComboBox, QLabel
-from PyQt5.QtCore import Qt
-
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QComboBox, QLabel, QWidget
+from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtGui import QPixmap
 from database import Database
 import constinfo
 import uigame
@@ -16,13 +16,32 @@ class WindowChooseRoom(ui.Window):
         self.init_lineedit()
         self.init_button()
         self.init_error_lbl()
+
+        self.centralwidget = QWidget(self)
+        self.gender = 1
+        self.curr_char = 0
+
+        self.init_display_char()
+
+        self.setCentralWidget(self.centralwidget)
+
         self.show()
+
+    def init_display_char(self):
+        self.char = QLabel(self.centralwidget)
+        self.char.setGeometry(QRect(350, 180, 600, 600))
+        query = self.myDataBase.get("SELECT path_char FROM player")
+        self.char.setPixmap(QPixmap(query[0]))
+
+        self.char.setScaledContents(True)
 
     def init_lineedit(self):
         self.room = QLineEdit(self)
         self.room.setPlaceholderText("Please Enter The Room Number")
-        self.room.setGeometry(800, 200, 260, 30)
-        self.room.setStyleSheet("color : black; border : 1px solid black; border-radius: 5px; font-size : 17px")
+        self.room.setGeometry(810, 210, 260, 30)
+        self.room.setStyleSheet(
+            "background-color : transparent; color : white; border : 1px solid white; border-radius: 5px; font-size : 17px"
+        )
         self.room.setAlignment(Qt.AlignCenter)
         self.room.setMaxLength(6)
 
@@ -31,7 +50,7 @@ class WindowChooseRoom(ui.Window):
         subject = self.myDataBase.get("SELECT DISTINCT id,subject FROM quiz")
 
         self.scroll_subject_choose = QComboBox(self)
-        self.scroll_subject_choose.setGeometry(590, 535, 100, 30)
+        self.scroll_subject_choose.setGeometry(590, 400, 100, 30)
         self.scroll_subject_choose.setStyleSheet(
             "QComboBox {  border-radius: 3px; }" "QComboBox QAbstractItemView {  border-radius: 3px; }"
         )
@@ -42,14 +61,14 @@ class WindowChooseRoom(ui.Window):
             self.scroll_subject_choose.addItem(sub[1].pop())
 
     def init_button(self):
-        self.btn_join_room = QPushButton("Create", self)
+        self.btn_join_room = QPushButton("Rejoindre", self)
         self.btn_join_room.resize(150, 60)
-        self.btn_join_room.move(565, 400)
+        self.btn_join_room.move(565, 700)
         self.btn_join_room.clicked.connect(self.join_room)
         self.btn_join_room.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
+            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
+            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
+            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
         )
 
     def init_error_lbl(self):
