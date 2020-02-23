@@ -124,17 +124,17 @@ class WindowEndGameStat(ui.Window):
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
 
+        self.wdg_answer = QWidget(self.centralwidget)
+        self.wdg_answer.setGeometry(100, 100, 300, 200)
+
         self.subject = subject
         self.true_answer = true_answer
         self.false_answer = false_answer
         self.total_question = total_question
 
-        self.wdg_answer = QWidget(self.centralwidget)
-        self.wdg_answer.setGeometry(100, 100, 300, 200)
+        self.btn_return = ui.ReturnButton(uimainmenu.WindowMainMenu, self.close, parent=self.centralwidget)
 
         self.init_answer()
-
-        self.init_return_btn()
 
         self.show()
 
@@ -156,17 +156,6 @@ class WindowEndGameStat(ui.Window):
         self.lbl_false_answer.setText(f"Note finale : {self.true_answer} / {self.total_question}")
         self.lbl_false_answer.setStyleSheet("color: blue; text-align : center")
         self.lbl_false_answer.move(0, 30)
-
-    def init_return_btn(self):
-        self.btn_return = QPushButton("Return", self)
-        self.btn_return.resize(150, 60)
-        self.btn_return.move(565, 470)
-        self.btn_return.clicked.connect(self.return_login)
-        self.btn_return.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-        )
 
     def return_login(self):
         self.close()
