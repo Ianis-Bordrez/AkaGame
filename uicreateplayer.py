@@ -27,7 +27,7 @@ class WindowCreatePlayer(ui.Window):
 
     def init_display_char(self):
         self.char = QLabel(self.centralwidget)
-        self.char.setGeometry(QRect(300, 50, 841, 720))
+        self.char.setGeometry(QRect(350, 180, 600, 600))
         if self.gender == 1:
             self.char.setPixmap(QPixmap(f"img/char/{constinfo.char_img_m[self.curr_char]}"))
         else:
@@ -38,7 +38,10 @@ class WindowCreatePlayer(ui.Window):
     def init_lineedit(self):
         self.name = QLineEdit(self)
         self.name.setPlaceholderText("Please Enter Your player name")
-        self.name.setGeometry(680, 810, 140, 30)
+        self.name.setGeometry(520, 50, 240, 30)
+        self.name.setStyleSheet(
+            "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
+        )
 
     def init_button(self):
         self.btn_switch_previous = ui.PicButton(
@@ -47,7 +50,7 @@ class WindowCreatePlayer(ui.Window):
             QPixmap("img/char/arrow_1.2.png"),
             self.centralwidget,
         )
-        self.btn_switch_previous.move(400, 500)
+        self.btn_switch_previous.move(250, 500)
         self.btn_switch_previous.clicked.connect(lambda: self.switch(1))
 
         self.btn_switch_next = ui.PicButton(
@@ -56,16 +59,28 @@ class WindowCreatePlayer(ui.Window):
             QPixmap("img/char/arrow_2.2.png"),
             self.centralwidget,
         )
-        self.btn_switch_next.move(1100, 500)
+        self.btn_switch_next.move(1000, 500)
         self.btn_switch_next.clicked.connect(lambda: self.switch(-1))
 
         self.btn_create = QPushButton("Create", self)
-        self.btn_create.move(700, 845)
+        self.btn_create.move(565, 790)
+        self.btn_create.resize(150, 60)
         self.btn_create.clicked.connect(self.create)
+        self.btn_create.setStyleSheet(
+            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
+            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
+            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
+        )
 
         self.btn_sex = QPushButton("Change sex", self)
-        self.btn_sex.move(100, 300)
+        self.btn_sex.move(565, 100)
+        self.btn_sex.resize(150, 60)
         self.btn_sex.clicked.connect(self.change_sex)
+        self.btn_sex.setStyleSheet(
+            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px; }"
+            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px; }"
+            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px; }"
+        )
 
     def change_sex(self):
         if self.gender == 1:

@@ -84,9 +84,9 @@ class WindowCreateAccount(ui.Window):
         self.btn_create.move(565, 400)
         self.btn_create.clicked.connect(self.create_account)
         self.btn_create.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px }"
+            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid black; border-radius : 20px; }"
+            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px; }"
+            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px; }"
         )
 
         self.btn_return = QPushButton("Return", self)

@@ -154,7 +154,7 @@ class WindowEndGameStat(ui.Window):
         self.lbl_false_answer = QLabel(self.wdg_answer)
         self.lbl_false_answer.setGeometry(440, 270, 400, 30)
         self.lbl_false_answer.setText(f"Note finale : {self.true_answer} / {self.total_question}")
-        self.lbl_false_answer.setStyleSheet("color: blue; text-align : center")
+        self.lbl_false_answer.setStyleSheet("color: white; text-align : center")
         self.lbl_false_answer.move(0,30)
 
     def init_return_btn(self):

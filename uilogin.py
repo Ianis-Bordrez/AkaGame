@@ -21,6 +21,7 @@ class WindowLogin(ui.Window):
     def init_lineedit(self):
         self.username = QLineEdit(self)
         self.username.setPlaceholderText("Please Enter Your name")
+        self.username.setText("eleve4")
         self.username.setGeometry(510, 200, 260, 30)
         self.username.setStyleSheet(
             "background-color : transparent; color : black; border : 1px solid black; border-radius: 5px; font-size : 17px"
@@ -29,6 +30,7 @@ class WindowLogin(ui.Window):
         self.username.setMaxLength(24)
 
         self.password = QLineEdit(self)
+        self.password.setText("rooot")
         self.password.setPlaceholderText("Please Enter Your password")
         self.password.setGeometry(510, 250, 260, 30)
         self.password.setStyleSheet(

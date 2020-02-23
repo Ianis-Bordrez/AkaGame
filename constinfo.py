@@ -22,8 +22,8 @@ columns_create_marks = ("account_id", "subject", "quiz_id", "mark")
 account_id = None
 account_status = None
 player_id = None
-player_char = None
+player_char = 0
 teatcher_subject = None
 
-char_img_m = ("char_m_1.png", "char_m_2.png", "char_m_3.png")
-char_img_w = ("char_w_1.png", "char_w_2.png", "char_w_3.png")
+char_img_m = ("char_m_1.png", "char_m_2.png", "char_m_3.png", "char_m_4.png")
+char_img_w = ("char_w_1.png", "char_w_2.png", "char_w_3.png", "char_w_4.png")
