@@ -104,7 +104,7 @@ class WindowLogin(ui.Window):
 
         constinfo.account_id = account_info[0][0]
         constinfo.account_status = account_info[0][1].pop()
-        constinfo.account_status = account_info[0][2].pop()
+        constinfo.teatcher_subject = account_info[0][2].pop()
 
         query = f"SELECT id FROM player WHERE account_id={constinfo.account_id}"
         player = self.myDataBase.get(query)

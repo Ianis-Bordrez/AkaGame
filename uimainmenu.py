@@ -15,7 +15,7 @@ class WindowMainMenu(ui.Window):
         self.show()
 
     def init_button(self):
-        self.btn_game = QPushButton("Start", self)
+        self.btn_game = QPushButton("Jouer", self)
         self.btn_game.resize(150, 60)
         self.btn_game.move(565, 450)
         self.btn_game.setStyleSheet(
@@ -25,7 +25,7 @@ class WindowMainMenu(ui.Window):
         )
         self.btn_game.clicked.connect(self.choose_room)
 
-        self.btn_stat = QPushButton("Statistiques", self)
+        self.btn_stat = QPushButton("profile", self)
         self.btn_stat.resize(150, 60)
         self.btn_stat.move(565, 550)
         self.btn_stat.setStyleSheet(
