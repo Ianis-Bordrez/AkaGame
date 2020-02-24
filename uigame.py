@@ -43,8 +43,17 @@ class WindowGame(ui.Window):
         self.btn_verif = QPushButton("Verif", self.centralwidget)
         self.answ_grid.addWidget(self.btn_verif, 2, 1, 1, 2)
         self.btn_verif.clicked.connect(self.verif_question)
+        self.init_question()
 
         self.show()
+
+    def init_question(self):
+        print(self.quiz_id)
+        self.question2 = QLabel(self)
+        self.question2.setGeometry(600, 350, 200, 80)
+        self.query = self.myDataBase.get(f"SELECT id,question FROM quiz_question WHERE quiz_id='{self.quiz_id}'")
+        self.question2.setText(self.query[self.curr_question][1])
+        self.question2.setStyleSheet("font-size : 30px")
 
     def init_answer(self, curr_question):
         question_number = (0, 1, 2, 3)
@@ -119,6 +128,7 @@ class WindowGame(ui.Window):
         self.answer2.setText(self.res[question][question_number[rand[1]]])
         self.answer3.setText(self.res[question][question_number[rand[2]]])
         self.answer4.setText(self.res[question][question_number[rand[3]]])
+        self.question2.setText(self.query[question][1])
 
 
 class WindowEndGameStat(ui.Window):
@@ -127,7 +137,7 @@ class WindowEndGameStat(ui.Window):
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
 
-        self.wdg_answer = QWidget(self.centralwidget)
+        self.wdg_answer = QWidget(self)
         self.wdg_answer.setGeometry(100, 100, 300, 200)
 
         self.subject = subject
@@ -135,7 +145,7 @@ class WindowEndGameStat(ui.Window):
         self.false_answer = false_answer
         self.total_question = total_question
 
-        self.btn_return = ui.ReturnButton(uimainmenu.WindowMainMenu, self.close, parent=self.centralwidget)
+        self.btn_return = ui.ReturnButton(uimainmenu.WindowMainMenu, self.close, parent=self.wdg_answer)
 
         self.init_answer()
 

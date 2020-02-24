@@ -406,3 +406,14 @@ class WindowCreateQuiz(ui.Window):
 
         self.quiz_id_manager_grpbox.setLayout(self.quiz_id_manager)
         self.horizontal_box.addWidget(self.quiz_id_manager_grpbox, 1, 1)
+
+
+from PyQt5.QtWidgets import QApplication
+import sys
+from uilogin import WindowLogin
+
+
+if __name__ == "__main__":
+    App = QApplication(sys.argv)
+    Window = WindowCreateQuiz()
+    sys.exit(App.exec())
