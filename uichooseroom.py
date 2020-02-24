@@ -70,7 +70,7 @@ class WindowChooseRoom(ui.Window):
             self.scroll_subject_choose.addItem("Aucun quiz")
             return False
         for sub in subject:
-            self.scroll_subject_choose.addItem(sub.pop())
+            self.scroll_subject_choose.addItem(sub[1].pop())
 
     def init_button(self):
         self.btn_join_room = QPushButton("Rejoindre", self)
