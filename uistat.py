@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QLabel, QWidget
+from PyQt5.QtWidgets import QLabel, QWidget, QProgressBar
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QPixmap
 from database import Database
@@ -13,7 +13,7 @@ class WindowStat(ui.Window):
         ui.Window.__init__(self, "Akagame | Connection")
         self.init_window()
         self.init_background("img/imgbckg.jpg")
-        self.init_title("Statistiques")
+        self.init_title("Profile")
 
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
@@ -22,6 +22,8 @@ class WindowStat(ui.Window):
 
         self.init_display_char()
         self.init_display_gold()
+        self.init_display_xp()
+        self.init_hp_bar()
 
         self.setCentralWidget(self.centralwidget)
 
@@ -31,16 +33,17 @@ class WindowStat(ui.Window):
         self.maths_marks = []
         self.history_marks = []
 
-        for sub in subject:
-            sub_pooped = sub[0].pop()
-            if sub_pooped == "FRENCH":
-                self.french_marks.append(sub[1])
-            elif sub_pooped == "ENGLISH":
-                self.english_marks.append(sub[1])
-            elif sub_pooped == "MATHS":
-                self.maths_marks.append(sub[1])
-            elif sub_pooped == "HISTORY":
-                self.history_marks.append(sub[1])
+        if subject != None:
+            for sub in subject:
+                sub_pooped = sub[0].pop()
+                if sub_pooped == "FRENCH":
+                    self.french_marks.append(sub[1])
+                elif sub_pooped == "ENGLISH":
+                    self.english_marks.append(sub[1])
+                elif sub_pooped == "MATHS":
+                    self.maths_marks.append(sub[1])
+                elif sub_pooped == "HISTORY":
+                    self.history_marks.append(sub[1])
 
         self.init_lineedit()
 
@@ -55,6 +58,17 @@ class WindowStat(ui.Window):
 
         self.show()
 
+    def init_hp_bar(self):
+        self.hp_bar = QProgressBar(self.centralwidget)
+        self.hp_bar.setGeometry(500, 200, 300, 30)
+        self.hp_bar.setMaximum(100)
+        query_curr_hp = self.myDataBase.get(f"SELECT HP FROM player WHERE account_id={constinfo.account_id}")
+        self.hp_bar.setValue(query_curr_hp[0])
+        self.hp_bar.setStyleSheet(
+            "QProgressBar { border: 2px solid grey; border-radius: 5px;text-align: center }"
+            "QProgressBar::chunk {background-color: red}"
+        )
+
     def note_color(self, subject_marks, subject_note):
         moy = mean(subject_marks)
         if moy > 15:
@@ -66,7 +80,7 @@ class WindowStat(ui.Window):
 
     def init_display_char(self):
         self.char = QLabel(self.centralwidget)
-        self.char.setGeometry(QRect(385, 230, 500, 500))
+        self.char.setGeometry(QRect(385, 250, 500, 500))
         query = self.myDataBase.get(f"SELECT path_char FROM player WHERE id={constinfo.player_id}")
         self.char.setPixmap(QPixmap(query[0]))
         self.char.setScaledContents(True)
@@ -83,12 +97,16 @@ class WindowStat(ui.Window):
         self.gold_num.setStyleSheet("font-size : 30px;")
 
     def init_display_xp(self):
-        self.char = QLabel(self.centralwidget)
-        self.char.setGeometry(QRect(385, 230, 500, 500))
-        query = self.myDataBase.get(f"SELECT path_char FROM player WHERE id={constinfo.player_id}")
-        self.char.setPixmap(QPixmap(query[0]))
+        print("ok")
+        self.xp = QLabel(self)
+        self.xp.setGeometry(100, 150, 120, 50)
+        self.xp.setText("XP :")
+        self.xp.setStyleSheet("font-size : 30px;")
 
-        self.char.setScaledContents(True)
+        self.xp_num = QLabel(self)
+        self.xp_num.setGeometry(165, 150, 250, 50)
+        self.xp_num.setText(str(self.myDataBase.get(f"SELECT xp FROM player WHERE id={constinfo.player_id}")[0]))
+        self.xp_num.setStyleSheet("font-size : 30px;")
 
     def init_lineedit(self):
         self.french = QLabel(self)

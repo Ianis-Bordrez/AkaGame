@@ -13,6 +13,7 @@ class WindowCreatePlayer(ui.Window):
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
         self.init_title("Création du personnage")
+        self.title.move(130, 36)
 
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
@@ -86,6 +87,7 @@ class WindowCreatePlayer(ui.Window):
         )
 
     def change_sex(self):
+        self.curr_char = 0
         if self.gender == 1:
             self.gender = 2
             self.char.setPixmap(QPixmap(f"img/char/{constinfo.char_img_w[0]}"))
@@ -98,7 +100,6 @@ class WindowCreatePlayer(ui.Window):
         if self.gender == 1:
             gen = "m"
         constinfo.player_char = f"img/char/char_{gen}_{(self.curr_char + 1) % len(constinfo.char_img_m)}.png"
-        print(constinfo.player_char)
         name = self.name.text()
         if len(name) > 12 or len(name) < 4:
             QMessageBox.about(self, "Create_player", "Your name must be between 5 and 12 characters.")
@@ -118,14 +119,12 @@ class WindowCreatePlayer(ui.Window):
             self.next = uimainmenu.WindowMainMenu()
 
     def switch(self, nextt):
-        print(nextt)
         if self.gender == 1:
             new_char = constinfo.char_img_m[(self.curr_char + nextt) % len(constinfo.char_img_m)]
         else:
             new_char = constinfo.char_img_w[(self.curr_char + nextt) % len(constinfo.char_img_w)]
         self.display_char(new_char)
         self.curr_char += nextt
-        print(self.curr_char)
 
     def display_char(self, path):
         self.char.setPixmap(QPixmap(f"img/char/{path}"))
