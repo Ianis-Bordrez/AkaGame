@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QMessageBox, QLabel, QComboBox, QWidget
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from database import Database
 import uilogin
 import constinfo
@@ -20,6 +20,9 @@ class WindowCreateAccount(ui.Window):
         self.init_error_field()
         self.init_label()
         self.init_button()
+
+        self.question_manager_lbl_success = QLabel(self.centralwidget)
+        self.question_manager_lbl_success.setGeometry(500, 500, 200, 30)
 
         self.btn_return = ui.ReturnButton(uilogin.WindowLogin, self.close, parent=self.centralwidget)
 
@@ -191,6 +194,19 @@ class WindowCreateAccount(ui.Window):
                 subject = "NONE"
                 self.query_create_account(table, query, username, password, email, status, subject)
 
+    def timer_account_error(self, sentence):
+        self.validate_timer = QTimer()
+        self.validate_timer.setInterval(4000)
+        self.validate_timer.timeout.connect(self.timer_account_error_stop)
+        self.validate_timer.start()
+
+        self.question_manager_lbl_success.setText(sentence)
+        self.question_manager_lbl_success.show()
+
+    def timer_account_error_stop(self):
+        self.validate_timer.stop()
+        self.question_manager_lbl_success.hide()
+
     def check_account(self, username, password, email, code):
         if (
             self.check_username(username)
@@ -198,7 +214,10 @@ class WindowCreateAccount(ui.Window):
             and self.check_email(email)
             and self.check_teatcher_code(code)
         ):
-            return True
+            if not self.myDataBase.get(f"SELECT login FROM account WHERE login='{username}'"):
+                return True
+            else:
+                self.timer_account_error("Le nom d'utilisateur est déjà utilisé.")
         return False
 
     def check_username(self, username):

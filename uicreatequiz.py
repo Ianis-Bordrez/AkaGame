@@ -169,9 +169,7 @@ class WindowCreateQuiz(ui.Window):
             quiz_name = self.quiz_manager_lineedit_name.text()
             quiz_number = self.generate_quiz_number()
 
-            if self.myDataBase.get(
-                f"SELECT name FROM quiz WHERE name='{quiz_name}' WHERE subject='{constinfo.teatcher_subject}'"
-            ):
+            if self.myDataBase.get(f"SELECT name FROM quiz WHERE name='{quiz_name}'"):
                 self.quiz_manager_timer_validate("Le nom du quiz existe déjà !")
                 return False
             elif quiz_name == "":

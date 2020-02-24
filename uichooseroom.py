@@ -50,9 +50,7 @@ class WindowChooseRoom(ui.Window):
         self.room = QLineEdit(self)
         self.room.setPlaceholderText("Please Enter The Room Number")
         self.room.setGeometry(880, 210, 260, 30)
-        self.room.setStyleSheet(
-            "background-color : transparent; color : white; border : 1px solid white; border-radius: 5px; font-size : 17px"
-        )
+        self.room.setStyleSheet(constinfo.stylesheet_lineedit)
         self.room.setAlignment(Qt.AlignCenter)
         self.room.setMaxLength(6)
 
@@ -69,18 +67,14 @@ class WindowChooseRoom(ui.Window):
             self.scroll_subject_choose.addItem("Aucun quiz")
             return False
         for sub in subject:
-            self.scroll_subject_choose.addItem(sub[1].pop())
+            self.scroll_subject_choose.addItem(sub.pop())
 
     def init_button(self):
         self.btn_join_room = QPushButton("Rejoindre", self)
         self.btn_join_room.resize(150, 60)
         self.btn_join_room.move(565, 780)
         self.btn_join_room.clicked.connect(self.join_room)
-        self.btn_join_room.setStyleSheet(
-            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
-            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
-            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
-        )
+        self.btn_join_room.setStyleSheet(constinfo.stylesheet_main_button)
 
     def init_error_lbl(self):
         self.lbl_error = QLabel(self)
