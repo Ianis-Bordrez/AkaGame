@@ -1,5 +1,16 @@
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QWidget, QHBoxLayout, QGridLayout, QRadioButton, QLabel
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QLineEdit,
+    QPushButton,
+    QWidget,
+    QHBoxLayout,
+    QGridLayout,
+    QRadioButton,
+    QLabel,
+    QProgressBar,
+)
 from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtGui import QPixmap
 from PyQt5 import QtCore
 from database import Database
 import random
@@ -17,6 +28,8 @@ class WindowGame(ui.Window):
         self.init_title("Quiz")
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
+        self.init_display_char()
+        self.init_hp_bar()
 
         self.quiz_id = quiz_id
         self.curr_question = 0
@@ -42,19 +55,37 @@ class WindowGame(ui.Window):
         # self.setLayout(self.answ_grid)
         self.init_answer(self.curr_question)
         self.btn_verif = QPushButton("Verif", self.centralwidget)
-        self.answ_grid.addWidget(self.btn_verif, 2, 1, 1, 2)
+        self.btn_verif.move(600, 800)
         self.btn_verif.clicked.connect(self.verif_question)
         self.init_question()
 
         self.show()
 
+    def init_display_char(self):
+        self.char = QLabel(self.centralwidget)
+        self.char.setGeometry(QRect(70, 100, 400, 400))
+        query = self.myDataBase.get(f"SELECT path_char FROM player WHERE id={constinfo.player_id}")
+        self.char.setPixmap(QPixmap(query[0]))
+        self.char.setScaledContents(True)
+
+    def init_hp_bar(self):
+        self.hp_bar = QProgressBar(self.centralwidget)
+        self.hp_bar.setGeometry(100, 70, 300, 30)
+        self.hp_bar.setMaximum(100)
+        self.query_curr_hp = self.myDataBase.get(f"SELECT HP FROM player WHERE account_id={constinfo.account_id}")
+        self.hp_bar.setValue(self.query_curr_hp[0])
+        self.hp_bar.setStyleSheet(
+            "QProgressBar { border: 2px solid grey; border-radius: 5px;text-align: center }"
+            "QProgressBar::chunk {background-color: red}"
+        )
+
     def init_question(self):
         print(self.quiz_id)
         self.question2 = QLabel(self)
-        self.question2.setGeometry(600, 350, 200, 80)
+        self.question2.setGeometry(600, 660, 200, 80)
         self.query = self.myDataBase.get(f"SELECT id,question FROM quiz_question WHERE quiz_id='{self.quiz_id}'")
         self.question2.setText(self.query[self.curr_question][1])
-        self.question2.setStyleSheet("font-size : 30px")
+        self.question2.setStyleSheet("font-size : 30px; color : white")
 
     def init_answer(self, curr_question):
         question_number = (0, 1, 2, 3)
@@ -66,10 +97,10 @@ class WindowGame(ui.Window):
         self.answer2 = QRadioButton(self.res[curr_question][question_number[rand[1]]])
         self.answer3 = QRadioButton(self.res[curr_question][question_number[rand[2]]])
         self.answer4 = QRadioButton(self.res[curr_question][question_number[rand[3]]])
-        self.answer1.setStyleSheet("QRadioButton { font: bold 14px; }")
-        self.answer2.setStyleSheet("QRadioButton { font: bold 14px; }")
-        self.answer3.setStyleSheet("QRadioButton { font: bold 14px; }")
-        self.answer4.setStyleSheet("QRadioButton { font: bold 14px; }")
+        self.answer1.setStyleSheet("QRadioButton { font: bold 14px; color : white }")
+        self.answer2.setStyleSheet("QRadioButton { font: bold 14px; color : white }")
+        self.answer3.setStyleSheet("QRadioButton { font: bold 14px; color : white }")
+        self.answer4.setStyleSheet("QRadioButton { font: bold 14px; color : white}")
         self.answ_grid.addWidget(self.answer1, 1, 0)
         self.answ_grid.addWidget(self.answer2, 1, 1)
         self.answ_grid.addWidget(self.answer3, 1, 2)
@@ -81,21 +112,25 @@ class WindowGame(ui.Window):
                 self.true_answer_count += 1
             else:
                 self.false_answer_count += 1
+                self.myDataBase.post(f"UPDATE player SET HP=HP-10 WHERE account_id={constinfo.account_id}")
         elif self.true_answer == 1:
             if self.answer2.isChecked():
                 self.true_answer_count += 1
             else:
                 self.false_answer_count += 1
+                self.myDataBase.post(f"UPDATE player SET HP=HP-10 WHERE account_id={constinfo.account_id}")
         elif self.true_answer == 2:
             if self.answer3.isChecked():
                 self.true_answer_count += 1
             else:
                 self.false_answer_count += 1
+                self.myDataBase.post(f"UPDATE player SET HP=HP-10 WHERE account_id={constinfo.account_id}")
         elif self.true_answer == 3:
             if self.answer4.isChecked():
                 self.true_answer_count += 1
             else:
                 self.false_answer_count += 1
+                self.myDataBase.post(f"UPDATE player SET HP=HP-10 WHERE account_id={constinfo.account_id}")
 
         self.curr_question += 1
 
@@ -130,6 +165,8 @@ class WindowGame(ui.Window):
         self.answer3.setText(self.res[question][question_number[rand[2]]])
         self.answer4.setText(self.res[question][question_number[rand[3]]])
         self.question2.setText(self.query[question][1])
+        self.query_curr_hp_new = self.myDataBase.get(f"SELECT HP FROM player WHERE account_id={constinfo.account_id}")
+        self.hp_bar.setValue(self.query_curr_hp_new[0])
 
 
 class WindowEndGameStat(ui.Window):
@@ -140,6 +177,8 @@ class WindowEndGameStat(ui.Window):
 
         self.wdg_answer = QWidget(self)
         self.setCentralWidget(self.wdg_answer)
+        self.init_display_char()
+        self.init_hp_bar()
 
         self.subject = subject
         self.true_answer = true_answer
@@ -147,6 +186,7 @@ class WindowEndGameStat(ui.Window):
         self.total_question = total_question
 
         self.win_gold()
+        self.win_xp()
 
         self.btn_return = ui.ReturnButton(uimainmenu.WindowMainMenu, self.close, parent=self.wdg_answer)
         self.btn_return.resize(150, 60)
@@ -161,15 +201,43 @@ class WindowEndGameStat(ui.Window):
 
         self.show()
 
+    def init_display_char(self):
+        self.char = QLabel(self.wdg_answer)
+        self.char.setGeometry(QRect(440, 100, 400, 400))
+        query = self.myDataBase.get(f"SELECT path_char FROM player WHERE id={constinfo.player_id}")
+        self.char.setPixmap(QPixmap(query[0]))
+        self.char.setScaledContents(True)
+
+    def init_hp_bar(self):
+        self.hp_bar = QProgressBar(self.wdg_answer)
+        self.hp_bar.setGeometry(490, 70, 300, 30)
+        self.hp_bar.setMaximum(100)
+        self.query_curr_hp = self.myDataBase.get(f"SELECT HP FROM player WHERE account_id={constinfo.account_id}")
+        self.hp_bar.setValue(self.query_curr_hp[0])
+        self.hp_bar.setStyleSheet(
+            "QProgressBar { border: 2px solid grey; border-radius: 5px;text-align: center }"
+            "QProgressBar::chunk {background-color: red}"
+        )
+
     def win_gold(self):
         gold_won = random.randint(10, 40)
         self.myDataBase.post(f"UPDATE player SET gold=gold+{gold_won} WHERE account_id={constinfo.account_id}")
 
         self.lbl_gold = QLabel(self.wdg_answer)
-        self.lbl_gold.setGeometry(500, 400, 400, 30)
+        self.lbl_gold.setGeometry(500, 100, 400, 30)
         self.lbl_gold.setText(f"Vous avez gagné {gold_won} golds")
         self.lbl_gold.setStyleSheet("color: black; text-align : center; font-size : 27px")
-        self.lbl_gold.move(530, 400)
+        self.lbl_gold.move(150, 200)
+
+    def win_xp(self):
+        xp_won = random.randint(10, 40)
+        self.myDataBase.post(f"UPDATE player SET xp=xp+{xp_won} WHERE account_id={constinfo.account_id}")
+
+        self.lbl_xp = QLabel(self.wdg_answer)
+        self.lbl_xp.setGeometry(500, 400, 400, 30)
+        self.lbl_xp.setText(f"Vous avez gagné {xp_won} xp")
+        self.lbl_xp.setStyleSheet("color: black; text-align : center; font-size : 27px")
+        self.lbl_xp.move(150, 250)
 
     def init_answer(self):
         self.lbl_true_answer = QLabel(self.wdg_answer)
