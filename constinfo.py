@@ -19,12 +19,6 @@ columns_create_quiz = ("quiz_id", "subject", "name")
 columns_create_question = ("quiz_id", "question", "answer_true", "answer_2", "answer_3", "answer_4")
 columns_create_marks = ("account_id", "subject", "quiz_id", "mark")
 
-account_id = None
-account_status = None
-player_id = None
-player_char = ""
-teatcher_subject = None
-
 char_img_m = ("char_m_1.png", "char_m_2.png", "char_m_3.png", "char_m_0.png")
 char_img_w = ("char_w_1.png", "char_w_2.png", "char_w_3.png", "char_w_0.png")
 
@@ -37,4 +31,10 @@ stylesheet_main_button = """
     QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px; }
     QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid black; border-radius : 20px; }
 """
+
+account_id = None
+account_status = None
+player_id = None
+player_char = ""
+teatcher_subject = None
 
