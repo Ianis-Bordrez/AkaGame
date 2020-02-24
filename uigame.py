@@ -43,8 +43,17 @@ class WindowGame(ui.Window):
         self.btn_verif = QPushButton("Verif", self.centralwidget)
         self.answ_grid.addWidget(self.btn_verif, 2, 1, 1, 2)
         self.btn_verif.clicked.connect(self.verif_question)
+        self.init_question()
 
         self.show()
+
+    def init_question(self):
+        print(self.quiz_id)
+        self.question = QLabel(self)
+        self.question.setGeometry(640, 350, 100, 50)
+        self.question.setText(
+            self.myDataBase.get(f"SELECT question FROM quiz_question WHERE quiz_id='{self.quiz_id}'")[0]
+        )
 
     def init_answer(self, curr_question):
         question_number = (0, 1, 2, 3)

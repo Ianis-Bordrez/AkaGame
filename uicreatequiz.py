@@ -11,7 +11,7 @@ class WindowCreateQuiz(ui.Window):
         ui.Window.__init__(self, "Akagame | Create Quiz")
         self.init_window()
         self.init_background("img/imgbckg.jpg")
-        self.init_title("Créatio nde quiz")
+        self.init_title("Création de quiz")
 
         self.qTimer = QTimer()
         self.qTimer.setInterval(500)

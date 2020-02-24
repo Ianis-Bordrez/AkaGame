@@ -7,3 +7,4 @@ if __name__ == "__main__":
     App = QApplication(sys.argv)
     Window = WindowLogin()
     sys.exit(App.exec())
+cd
