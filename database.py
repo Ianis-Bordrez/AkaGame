@@ -67,3 +67,12 @@ class Database:
         if self._connection is not None and self._connection.is_connected():
             connected = True
         return connected
+
+    def disconnect(self):
+        try:
+            if self._connection:
+                self._connection.disconnect()
+            self._connection = None
+        except mysql.Error as e:
+            msg = "Failure in disconnecting from database. Error: {0}".format(e)
+            raise DatabaseError(msg)

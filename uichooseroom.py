@@ -4,6 +4,7 @@ from PyQt5.QtGui import QPixmap
 import constinfo
 import uigame
 import ui
+import uimainmenu
 
 
 class WindowChooseRoom(ui.Window):
@@ -24,6 +25,8 @@ class WindowChooseRoom(ui.Window):
         self.init_button()
         self.init_error_lbl()
         self.init_hp_bar()
+
+        self.btn_return = ui.ReturnButton(uimainmenu.WindowMainMenu, self.close, parent=self.centralwidget)
 
         self.show()
 

@@ -16,13 +16,13 @@ class Window(QMainWindow):
         self.myDataBase.connect()
 
     def init_window(self):
-        self.setFixedSize(1280, 900)
+        self.setFixedSize(self.width, self.height)
         self.setWindowTitle(self.windowTitle)
 
     def init_background(self, path):
         self.background = QLabel(self)
         self.background.setPixmap(QPixmap(path))
-        self.background.setGeometry(0, 0, 1280, 900)
+        self.background.setGeometry(0, 0, self.width, self.height)
 
     def init_title(self, title):
         self.title = QLabel(self)

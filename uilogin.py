@@ -22,6 +22,7 @@ class WindowLogin(ui.Window):
         self.init_lineedit()
         self.init_button()
         self.init_label()
+
         self.show()
 
     def init_label(self):

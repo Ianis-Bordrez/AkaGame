@@ -45,6 +45,8 @@ class WindowCreateQuiz(ui.Window):
         self.init_question()
         self.init_quiz_get_id()
 
+        self.btn_return = ui.ReturnButton(uimainmenuteatcher.WindowTeatcher, self.close, parent=self.centralwidget)
+
         self.show()
 
     def update_data(self, force_update=False):
