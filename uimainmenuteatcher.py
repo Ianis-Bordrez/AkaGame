@@ -10,6 +10,7 @@ class WindowTeatcher(ui.Window):
         ui.Window.__init__(self, "AkaGame | Teatcher main window")
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
+        self.init_title("Menu principal")
         self.init_button()
         self.show()
 

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QLabel, QWidget
+from PyQt5.QtWidgets import QLabel, QWidget, QProgressBar
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QPixmap
 from database import Database
@@ -13,6 +13,7 @@ class WindowStat(ui.Window):
         ui.Window.__init__(self, "Akagame | Connection")
         self.init_window()
         self.init_background("img/imgbckg.jpg")
+        self.init_title("Profile")
 
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
@@ -20,6 +21,9 @@ class WindowStat(ui.Window):
         self.centralwidget = QWidget(self)
 
         self.init_display_char()
+        self.init_display_gold()
+        self.init_display_xp()
+        self.init_hp_bar()
 
         self.setCentralWidget(self.centralwidget)
 
@@ -29,16 +33,17 @@ class WindowStat(ui.Window):
         self.maths_marks = []
         self.history_marks = []
 
-        for sub in subject:
-            sub_pooped = sub[0].pop()
-            if sub_pooped == "FRENCH":
-                self.french_marks.append(sub[1])
-            elif sub_pooped == "ENGLISH":
-                self.english_marks.append(sub[1])
-            elif sub_pooped == "MATHS":
-                self.maths_marks.append(sub[1])
-            elif sub_pooped == "HISTORY":
-                self.history_marks.append(sub[1])
+        if subject != None:
+            for sub in subject:
+                sub_pooped = sub[0].pop()
+                if sub_pooped == "FRENCH":
+                    self.french_marks.append(sub[1])
+                elif sub_pooped == "ENGLISH":
+                    self.english_marks.append(sub[1])
+                elif sub_pooped == "MATHS":
+                    self.maths_marks.append(sub[1])
+                elif sub_pooped == "HISTORY":
+                    self.history_marks.append(sub[1])
 
         self.init_lineedit()
 
@@ -53,13 +58,55 @@ class WindowStat(ui.Window):
 
         self.show()
 
+    def init_hp_bar(self):
+        self.hp_bar = QProgressBar(self.centralwidget)
+        self.hp_bar.setGeometry(500, 200, 300, 30)
+        self.hp_bar.setMaximum(100)
+        query_curr_hp = self.myDataBase.get(f"SELECT HP FROM player WHERE account_id={constinfo.account_id}")
+        self.hp_bar.setValue(query_curr_hp[0])
+        self.hp_bar.setStyleSheet(
+            "QProgressBar { border: 2px solid grey; border-radius: 5px;text-align: center }"
+            "QProgressBar::chunk {background-color: red}"
+        )
+
+    def note_color(self, subject_marks, subject_note):
+        moy = mean(subject_marks)
+        if moy > 15:
+            subject_note.setStyleSheet("font-size : 27px; color : green")
+        elif moy > 10:
+            subject_note.setStyleSheet("font-size : 27px; color : yellow")
+        else:
+            subject_note.setStyleSheet("font-size : 27px; color : red")
+
     def init_display_char(self):
         self.char = QLabel(self.centralwidget)
-        self.char.setGeometry(QRect(385, 230, 500, 500))
+        self.char.setGeometry(QRect(385, 250, 500, 500))
         query = self.myDataBase.get(f"SELECT path_char FROM player WHERE id={constinfo.player_id}")
         self.char.setPixmap(QPixmap(query[0]))
-
         self.char.setScaledContents(True)
+
+    def init_display_gold(self):
+        self.gold = QLabel(self.centralwidget)
+        self.gold.setGeometry(QRect(100, 20, 120, 120))
+        self.gold.setPixmap(QPixmap("img/gold.png"))
+        self.gold.setScaledContents(True)
+
+        self.gold_num = QLabel(self)
+        self.gold_num.setGeometry(255, 60, 250, 50)
+        self.gold_num.setText(str(self.myDataBase.get(f"SELECT gold FROM player WHERE id={constinfo.player_id}")[0]))
+        self.gold_num.setStyleSheet("font-size : 30px;")
+
+    def init_display_xp(self):
+        print("ok")
+        self.xp = QLabel(self)
+        self.xp.setGeometry(100, 150, 120, 50)
+        self.xp.setText("XP :")
+        self.xp.setStyleSheet("font-size : 30px;")
+
+        self.xp_num = QLabel(self)
+        self.xp_num.setGeometry(165, 150, 250, 50)
+        self.xp_num.setText(str(self.myDataBase.get(f"SELECT xp FROM player WHERE id={constinfo.player_id}")[0]))
+        self.xp_num.setStyleSheet("font-size : 30px;")
 
     def init_lineedit(self):
         self.french = QLabel(self)
@@ -86,31 +133,35 @@ class WindowStat(ui.Window):
         self.french_note.setGeometry(1100, 45, 600, 60)
         if self.french_marks != []:
             self.french_note.setText(str(mean(self.french_marks)))
+            self.note_color(self.french_marks, self.french_note)
         else:
             self.french_note.setText("Pas de note")
-        self.french_note.setStyleSheet("font-size : 27px;")
+            self.french_note.setStyleSheet("font-size : 27px;")
 
         self.english_note = QLabel(self)
         self.english_note.setGeometry(1100, 100, 600, 60)
         if self.english_marks != []:
             self.english_note.setText(str(mean(self.english_marks)))
+            self.note_color(self.english_marks, self.english_note)
         else:
             self.english_note.setText("Pas de note")
-        self.english_note.setStyleSheet("font-size : 27px;")
+            self.english_note.setStyleSheet("font-size : 27px;")
 
         self.maths_note = QLabel(self)
         self.maths_note.setGeometry(1100, 155, 600, 60)
-        print(self.maths_marks)
         if self.maths_marks != []:
             self.maths_note.setText(str(mean(self.maths_marks)))
+            self.note_color(self.maths_marks, self.maths_note)
         else:
             self.maths_note.setText("Pas de note")
-        self.maths_note.setStyleSheet("font-size : 27px;")
+            self.maths_note.setStyleSheet("font-size : 27px;")
 
         self.history_note = QLabel(self)
         self.history_note.setGeometry(1100, 210, 600, 60)
         if self.history_marks != []:
             self.history_note.setText(str(mean(self.history_marks)))
+            self.note_color(self.history_marks, self.history_note)
         else:
             self.history_note.setText("Pas de note")
-        self.history_note.setStyleSheet("font-size : 27px;")
+            self.history_note.setStyleSheet("font-size : 27px;")
+

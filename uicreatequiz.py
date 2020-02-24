@@ -11,6 +11,7 @@ class WindowCreateQuiz(ui.Window):
         ui.Window.__init__(self, "Akagame | Create Quiz")
         self.init_window()
         self.init_background("img/imgbckg.jpg")
+        self.init_title("Créatio nde quiz")
 
         self.qTimer = QTimer()
         self.qTimer.setInterval(500)
@@ -163,4 +164,3 @@ class WindowCreateQuiz(ui.Window):
         all_chars = string.ascii_letters + string.digits
         password = "".join(random.choice(all_chars) for x in range(6))
         return password
-

@@ -11,6 +11,7 @@ class WindowChooseRoom(ui.Window):
         ui.Window.__init__(self, "AkaGame | Choose game")
         self.init_window()
         self.init_background("img/bckg_create_char.jpg")
+        self.init_title("Choix du quiz")
 
         self.centralwidget = QWidget(self)
 

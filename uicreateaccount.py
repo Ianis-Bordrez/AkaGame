@@ -11,6 +11,7 @@ class WindowCreateAccount(ui.Window):
         ui.Window.__init__(self, "Akagame | Create account")
         self.init_window()
         self.init_background("img/imgbckg.jpg")
+        self.init_title("Création de compte")
 
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
