@@ -164,13 +164,3 @@ class WindowCreateQuiz(ui.Window):
         password = "".join(random.choice(all_chars) for x in range(6))
         return password
 
-
-from PyQt5.QtWidgets import QApplication
-import sys
-from uilogin import WindowLogin
-
-
-if __name__ == "__main__":
-    App = QApplication(sys.argv)
-    Window = WindowCreateQuiz()
-    sys.exit(App.exec())
