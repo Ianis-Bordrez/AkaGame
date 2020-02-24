@@ -94,15 +94,16 @@ class WindowCreateQuiz(ui.Window):
             if not self.current_quiz_name == quiz_name or force_update:
                 self.question_manager_scroll_question.clear()
                 self.current_quiz_name = quiz_name
-                self.current_quiz_id = self.myDataBase.get(
-                    f"SELECT quiz_id FROM quiz WHERE name='{self.current_quiz_name}'"
-                )[0]
-                question_list = self.myDataBase.get(
-                    f"SELECT id,question FROM quiz_question WHERE quiz_id='{self.current_quiz_id}'"
-                )
-                if question_list:
-                    for question in question_list:
-                        self.question_manager_scroll_question.addItem(question[1])
+                if self.current_quiz_name:
+                    self.current_quiz_id = self.myDataBase.get(
+                        f"SELECT quiz_id FROM quiz WHERE name='{self.current_quiz_name}'"
+                    )[0]
+                    question_list = self.myDataBase.get(
+                        f"SELECT id,question FROM quiz_question WHERE quiz_id='{self.current_quiz_id}'"
+                    )
+                    if question_list:
+                        for question in question_list:
+                            self.question_manager_scroll_question.addItem(question[1])
 
         id_quiz_name = self.quiz_id_manager_scroll_quiz_list.currentText()
         if self.id_quiz_current_name != id_quiz_name:
@@ -128,7 +129,7 @@ class WindowCreateQuiz(ui.Window):
 
     def init_quiz(self):
         self.quiz_manager_grpbox = QGroupBox("Créer/suprimer un quiz", self.centralwidget)
-        self.quiz_manager_grpbox.setMaximumSize(300, 120)
+        self.quiz_manager_grpbox.setMaximumSize(300, 130)
         self.quiz_manager = QFormLayout()
 
         self.quiz_manager_lbl_action = QLabel()
