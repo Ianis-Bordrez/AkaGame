@@ -112,7 +112,9 @@ class WindowCreateQuiz(ui.Window):
         if force_update:
             self.question_manager_scroll_quiz_list.clear()
             self.quiz_manager_scroll_quiz.clear()
-            quiz_list = self.myDataBase.get("SELECT quiz_id,name FROM quiz")
+            quiz_list = self.myDataBase.get(
+                f"SELECT quiz_id,name FROM quiz WHERE subject='{constinfo.teatcher_subject}'"
+            )
             if quiz_list:
                 for quiz in quiz_list:
                     self.question_manager_scroll_quiz_list.addItem(quiz[1])
@@ -142,7 +144,9 @@ class WindowCreateQuiz(ui.Window):
 
         self.quiz_manager_scroll_quiz = QComboBox()
 
-        quiz_list = self.myDataBase.get("SELECT DISTINCT quiz_id,subject,name FROM quiz")
+        quiz_list = self.myDataBase.get(
+            f"SELECT DISTINCT quiz_id,subject,name FROM quiz WHERE subject='{constinfo.teatcher_subject}'"
+        )
         if quiz_list != None:
             for quiz in quiz_list:
                 self.quiz_manager_scroll_quiz.addItem(quiz[2])
@@ -165,7 +169,9 @@ class WindowCreateQuiz(ui.Window):
             quiz_name = self.quiz_manager_lineedit_name.text()
             quiz_number = self.generate_quiz_number()
 
-            if self.myDataBase.get(f"SELECT name FROM quiz WHERE name='{quiz_name}'"):
+            if self.myDataBase.get(
+                f"SELECT name FROM quiz WHERE name='{quiz_name}' WHERE subject='{constinfo.teatcher_subject}'"
+            ):
                 self.quiz_manager_timer_validate("Le nom du quiz existe déjà !")
                 return False
             elif quiz_name == "":
@@ -182,7 +188,7 @@ class WindowCreateQuiz(ui.Window):
                 placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_quiz))]),
             )
             self.myDataBase.post(
-                query, (quiz_number, "FRENCH", quiz_name,),
+                query, (quiz_number, constinfo.teatcher_subject, quiz_name,),
             )
             self.quiz_manager_lineedit_name.clear()
             self.quiz_manager_timer_validate("Quiz créer avec succès !")
@@ -240,7 +246,7 @@ class WindowCreateQuiz(ui.Window):
         self.question_manager_lbl_quiz_list.setText("Quiz")
         self.question_manager_scroll_quiz_list = QComboBox()
 
-        quiz_list = self.myDataBase.get("SELECT quiz_id,name FROM quiz")
+        quiz_list = self.myDataBase.get(f"SELECT quiz_id,name FROM quiz WHERE subject='{constinfo.teatcher_subject}'")
         if quiz_list:
             for quiz in quiz_list:
                 self.question_manager_scroll_quiz_list.addItem(quiz[1])
@@ -390,7 +396,7 @@ class WindowCreateQuiz(ui.Window):
 
         self.quiz_id_manager_scroll_quiz_list = QComboBox()
 
-        quiz_list = self.myDataBase.get("SELECT quiz_id,name FROM quiz")
+        quiz_list = self.myDataBase.get(f"SELECT quiz_id,name FROM quiz WHERE subject='{constinfo.teatcher_subject}'")
         if quiz_list:
             for quiz in quiz_list:
                 self.quiz_id_manager_scroll_quiz_list.addItem(quiz[1])
@@ -406,14 +412,3 @@ class WindowCreateQuiz(ui.Window):
 
         self.quiz_id_manager_grpbox.setLayout(self.quiz_id_manager)
         self.horizontal_box.addWidget(self.quiz_id_manager_grpbox, 1, 1)
-
-
-from PyQt5.QtWidgets import QApplication
-import sys
-from uilogin import WindowLogin
-
-
-if __name__ == "__main__":
-    App = QApplication(sys.argv)
-    Window = WindowCreateQuiz()
-    sys.exit(App.exec())
