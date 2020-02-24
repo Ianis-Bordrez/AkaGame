@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QWidget, QHBoxL
 from PyQt5.QtCore import Qt, QRect
 from PyQt5 import QtCore
 from database import Database
+import random
 import constinfo
 import ui
 import random
@@ -138,37 +139,56 @@ class WindowEndGameStat(ui.Window):
         self.init_background("img/bckg_create_char.jpg")
 
         self.wdg_answer = QWidget(self)
-        self.wdg_answer.setGeometry(100, 100, 300, 200)
+        self.setCentralWidget(self.wdg_answer)
 
         self.subject = subject
         self.true_answer = true_answer
         self.false_answer = false_answer
         self.total_question = total_question
 
+        self.win_gold()
+
         self.btn_return = ui.ReturnButton(uimainmenu.WindowMainMenu, self.close, parent=self.wdg_answer)
+        self.btn_return.resize(150, 60)
+        self.btn_return.move(565, 750)
+        self.btn_return.setStyleSheet(
+            "QPushButton { background-color: transparent; font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
+            "QPushButton:hover { background-color: rgba(50, 50, 50, 0.5); font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
+            "QPushButton:pressed { background-color: rgba(250, 250, 250, 0.5); font-size: 20px; border : 2px solid white; border-radius : 20px; color : white }"
+        )
 
         self.init_answer()
 
         self.show()
 
+    def win_gold(self):
+        gold_won = random.randint(10, 40)
+        self.myDataBase.post(f"UPDATE player SET gold=gold+{gold_won} WHERE account_id={constinfo.account_id}")
+
+        self.lbl_gold = QLabel(self.wdg_answer)
+        self.lbl_gold.setGeometry(500, 400, 400, 30)
+        self.lbl_gold.setText(f"Vous avez gagné {gold_won} golds")
+        self.lbl_gold.setStyleSheet("color: black; text-align : center; font-size : 27px")
+        self.lbl_gold.move(530, 400)
+
     def init_answer(self):
         self.lbl_true_answer = QLabel(self.wdg_answer)
-        self.lbl_true_answer.setGeometry(440, 230, 400, 30)
+        self.lbl_true_answer.setGeometry(500, 230, 400, 30)
         self.lbl_true_answer.setText(f"Réponses justes : {self.true_answer}")
-        self.lbl_true_answer.setStyleSheet("color: green; text-align : center")
-        self.lbl_true_answer.move(0, 0)
+        self.lbl_true_answer.setStyleSheet("color: green; text-align : center; font-size : 27px")
+        self.lbl_true_answer.move(530, 500)
 
         self.lbl_false_answer = QLabel(self.wdg_answer)
-        self.lbl_false_answer.setGeometry(440, 250, 400, 30)
+        self.lbl_false_answer.setGeometry(500, 250, 400, 30)
         self.lbl_false_answer.setText(f"Réponses fausses : {self.false_answer}")
-        self.lbl_false_answer.setStyleSheet("color: red; text-align : center")
-        self.lbl_false_answer.move(0, 15)
+        self.lbl_false_answer.setStyleSheet("color: red; text-align : center; font-size : 27px")
+        self.lbl_false_answer.move(530, 550)
 
         self.lbl_false_answer = QLabel(self.wdg_answer)
-        self.lbl_false_answer.setGeometry(440, 270, 400, 30)
+        self.lbl_false_answer.setGeometry(500, 270, 400, 30)
         self.lbl_false_answer.setText(f"Note finale : {self.true_answer} / {self.total_question}")
-        self.lbl_false_answer.setStyleSheet("color: blue; text-align : center")
-        self.lbl_false_answer.move(0, 30)
+        self.lbl_false_answer.setStyleSheet("color: blue; text-align : center; font-size : 27px")
+        self.lbl_false_answer.move(530, 600)
 
     def return_login(self):
         self.close()
