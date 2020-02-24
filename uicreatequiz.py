@@ -115,11 +115,13 @@ class WindowCreateQuiz(ui.Window):
         if force_update:
             self.question_manager_scroll_quiz_list.clear()
             self.quiz_manager_scroll_quiz.clear()
+            self.quiz_id_manager_scroll_quiz_list.clear()
             quiz_list = self.myDataBase.get(
                 f"SELECT quiz_id,name FROM quiz WHERE subject='{constinfo.teatcher_subject}'"
             )
             if quiz_list:
                 for quiz in quiz_list:
+                    self.quiz_id_manager_scroll_quiz_list.addItem(quiz[1])
                     self.question_manager_scroll_quiz_list.addItem(quiz[1])
                     self.quiz_manager_scroll_quiz.addItem(quiz[1])
 
