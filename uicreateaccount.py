@@ -184,6 +184,7 @@ class WindowCreateAccount(ui.Window):
                 placeholders=",".join(["%s" for i in range(len(constinfo.columns_create_account))]),
             )
             if code == "ok":
+                self.qwidgetwindow()
                 status = "TEATCHER"
                 subject = self.scroll_subject_choose.currentText()
                 self.button_create_teatcher.clicked.connect(
