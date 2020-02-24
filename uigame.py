@@ -80,12 +80,12 @@ class WindowGame(ui.Window):
         )
 
     def init_question(self):
-        print(self.quiz_id)
         self.question2 = QLabel(self)
-        self.question2.setGeometry(600, 660, 200, 80)
+        self.question2.setGeometry(5, 660, 1280, 80)
         self.query = self.myDataBase.get(f"SELECT id,question FROM quiz_question WHERE quiz_id='{self.quiz_id}'")
         self.question2.setText(self.query[self.curr_question][1])
         self.question2.setStyleSheet("font-size : 30px; color : white")
+        self.question2.setAlignment(Qt.AlignCenter)
 
     def init_answer(self, curr_question):
         question_number = (0, 1, 2, 3)

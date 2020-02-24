@@ -97,7 +97,6 @@ class WindowStat(ui.Window):
         self.gold_num.setStyleSheet("font-size : 30px;")
 
     def init_display_xp(self):
-        print("ok")
         self.xp = QLabel(self)
         self.xp.setGeometry(100, 150, 120, 50)
         self.xp.setText("XP :")

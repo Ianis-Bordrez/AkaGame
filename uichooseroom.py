@@ -107,11 +107,9 @@ class WindowChooseRoom(ui.Window):
             query = f"SELECT * FROM marks WHERE quiz_id='{quiz_id}' AND subject='{subject}' AND account_id='{constinfo.account_id}'"
             res = self.myDataBase.get(query)
             if res:
-                print("1")
                 self.lbl_error.setText("Vous avez déjà fait le quiz.")
             else:
                 return True
         else:
-            print("2")
             self.lbl_error.setText("Le quiz n'existe pas.")
         return False
