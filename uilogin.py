@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QMessageBox, QLabel, QWidget
 from PyQt5.QtCore import Qt
 from database import Database
+from passlib.hash import sha256_crypt
 import ui
 import constinfo
 import uicreateaccount
@@ -98,9 +99,12 @@ class WindowLogin(ui.Window):
 
     def check_login(self, username, password):
 
-        query = f"SELECT id, status, subject FROM account WHERE login='{username}' AND password='{password}'"
+        query = f"SELECT DISTINCT id,status,subject,password FROM account WHERE login='{username}'"
         account_info = self.myDataBase.get(query)
         if account_info is None:
+            QMessageBox.about(self, "Connection", "Wrong username or password")
+            return False
+        if not sha256_crypt.verify(password, account_info[0][3]):
             QMessageBox.about(self, "Connection", "Wrong username or password")
             return False
 

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QPushButton, QMessageBox, QLabel, QComboBox, QWidget
 from PyQt5.QtCore import Qt, QTimer
 from database import Database
+from passlib.hash import sha256_crypt
 import uilogin
 import constinfo
 import ui
@@ -176,7 +177,7 @@ class WindowCreateAccount(ui.Window):
         code = self.teatcher.text()
 
         if self.check_account(username, password, email, code):
-
+            password_hash = sha256_crypt.hash(password)
             table = "account"
             query = constinfo.SQL_INSERT.format(
                 columns=",".join(constinfo.columns_create_account),
@@ -188,12 +189,12 @@ class WindowCreateAccount(ui.Window):
                 status = "TEATCHER"
                 subject = self.scroll_subject_choose.currentText()
                 self.button_create_teatcher.clicked.connect(
-                    lambda: self.query_create_account(table, query, username, password, email, status, subject)
+                    lambda: self.query_create_account(table, query, username, password_hash, email, status, subject)
                 )
             else:
                 status = "STUDENT"
                 subject = "NONE"
-                self.query_create_account(table, query, username, password, email, status, subject)
+                self.query_create_account(table, query, username, password_hash, email, status, subject)
 
     def timer_account_error(self, sentence):
         self.validate_timer = QTimer()
