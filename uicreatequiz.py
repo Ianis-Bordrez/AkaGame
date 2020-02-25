@@ -243,6 +243,7 @@ class WindowCreateQuiz(ui.Window):
     def init_question(self):
         self.question_manager_grpbox = QGroupBox("Créer/suprimer une question", self.centralwidget)
         self.question_manager_grpbox.setMaximumSize(700, 300)
+        self.question_manager_grpbox.setMinimumSize(400, 250)
         self.question_manager = QFormLayout()
 
         self.question_manager_lbl_quiz_list = QLabel()
